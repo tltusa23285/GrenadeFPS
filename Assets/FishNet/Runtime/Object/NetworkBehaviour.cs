@@ -1,12 +1,13 @@
-﻿using FishNet.Documenting;
+﻿using FishNet.CodeGenerating;
+using FishNet.Documenting;
 using FishNet.Managing.Transporting;
 using FishNet.Serializing.Helping;
-using FishNet.Utility.Constant;
+using FishNet.Utility;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [assembly: InternalsVisibleTo(UtilityConstants.CODEGEN_ASSEMBLY_NAME)]
-namespace FishNet.Object
+namespace FishNet.Object 
 {
     /// <summary>
     /// Scripts which inherit from NetworkBehaviour can be used to gain insight of, and perform actions on the network.
@@ -76,6 +77,8 @@ namespace FishNet.Object
         }
 
 
+
+#if !PREDICTION_V2
         /// <summary>
         /// Preinitializes this script for the network.
         /// </summary>
@@ -94,7 +97,30 @@ namespace FishNet.Object
                 _initializedOnceClient = true;
             }
         }
+#else
+        /// <summary>
+        /// Preinitializes this script for the network.
+        /// </summary>
+        internal void Preinitialize_Internal(NetworkObject nob, bool asServer)
+        {
+            _transportManagerCache = nob.TransportManager;
+            
+            InitializeOnceSyncTypes(asServer);
+            if (asServer)
+            {
+                InitializeRpcLinks();
+                _initializedOnceServer = true;
+            }
+            else
+            {
+                if (!_initializedOnceClient && nob.EnablePrediction)
+                    nob.RegisterPredictionBehaviourOnce(this);
 
+                _initializedOnceClient = true;
+            }
+        }
+
+#endif
         internal void Deinitialize(bool asServer)
         {
 
@@ -122,7 +148,7 @@ namespace FishNet.Object
         /// <summary>
         /// Long name is to prevent users from potentially creating their own method named the same.
         /// </summary>
-        [CodegenMakePublic]
+        [MakePublic]
         [APIExclude]
         internal virtual void NetworkInitializeIfDisabled() { }
 

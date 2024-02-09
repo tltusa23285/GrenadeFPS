@@ -26,9 +26,16 @@ namespace Game.Actors.Components
         private bool IsGrounded = false;
         private bool JumpQueued = false;
 
-        private Vector3 LocalMoveDir;
+        // TODO: with fish net, we need to seperate input and used variables
+        /* example case
+         We used input direction to fill moveinput of data on client
+         In replication, we tried to fill input direction with moveinpunt
+         this caused input direction to always be Zero'd on client
+         */
+        private Vector3 MoveInput; 
         private Vector3 CurrentRotation;
 
+        private Vector3 LocalMoveDir;
         protected override void OnAwake()
         {
             base.OnAwake();
@@ -143,10 +150,11 @@ namespace Game.Actors.Components
             HeadTrans.localRotation = Quaternion.Euler(CurrentRotation.x, 0, 0);
         }
 
+
         private void ApplyMovementInput(in float deltaTime)
         {
-            LocalMoveDir.x = InputDirection.x * Stats.MoveSpeed;
-            LocalMoveDir.z = InputDirection.z * Stats.MoveSpeed;
+            LocalMoveDir.x = MoveInput.x * Stats.MoveSpeed;
+            LocalMoveDir.z = MoveInput.z * Stats.MoveSpeed;
         }
 
         private void Move(in float deltaTime)
@@ -156,20 +164,16 @@ namespace Game.Actors.Components
         }
         #region Networked Movement
 
-        protected override void GetInputData(out InputData input)
+        protected override void ConstructInputData(out InputData input)
         {
-            input = new InputData()
-            {
-                MoveInput = InputDirection,
-                RotInput = CombinedInputRotation,
-                JumpDown = JumpQueued,
-            };
+            input = new InputData(InputDirection, CombinedInputRotation, JumpQueued);
             CombinedInputRotation = Vector2.zero;
             JumpQueued = false;
         }
         protected override void ApplyInputData(InputData input)
         {
-            InputDirection = input.MoveInput;
+            //InputDirection = input.MoveInput;
+            MoveInput = input.MoveInput;
             InputRotation = input.RotInput;
             if (input.JumpDown && IsGrounded)
             {
@@ -181,6 +185,7 @@ namespace Game.Actors.Components
             {
                 OnFrameUpdate((float)TimeManager.TickDelta);
             }
+
             OnPhysicsUpdate((float)TimeManager.TickDelta);
         }
 

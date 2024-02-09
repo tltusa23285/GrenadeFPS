@@ -63,7 +63,7 @@ namespace Game.Weapons
             if (ShotTimer < ShotCooldown) return;
             ShotTimer = 0;
 
-            if(!IsHost) GrenadeSpawner.SpawnGrenadeLocal(Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce);
+            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce);
             FireServer(Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce, base.TimeManager.Tick);
         }
 
@@ -84,7 +84,7 @@ namespace Game.Weapons
             float passed_time = (float)base.TimeManager.TimePassed(tick, false);
             passed_time = Mathf.Min(MAX_PASSED_TIME / 2f, passed_time);
 
-            if(!IsHost)GrenadeSpawner.SpawnGrenadeLocal(position, rotation, owner, launchForce, passed_time);
+            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(position, rotation, owner, launchForce, passed_time);
         }
     }
 }

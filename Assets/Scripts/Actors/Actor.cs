@@ -87,24 +87,22 @@ namespace Game.Actors
         #region IDamageable
         [Header("Damageable")]
 
-        [SyncVar]
-        public int _MaxHp = 100;
-        [SyncVar]
-        public int _CurrentHP = 100;
+        public readonly SyncVar<int> _MaxHp = new(100);
+        public readonly SyncVar<int> _CurrentHP = new(100);
 
-        int IDamageable.MaxHp => _MaxHp;
+        int IDamageable.MaxHp => _MaxHp.Value;
 
-        int IDamageable.CurrentHp => _CurrentHP;
+        int IDamageable.CurrentHp => _CurrentHP.Value;
 
         void IDamageable.TakeDamage(int val)
         {
-            _CurrentHP = Mathf.Max(0, _CurrentHP - val);
+            _CurrentHP.Value = Mathf.Max(0, _CurrentHP.Value - val);
             UpdateHP();
         }
 
         void IDamageable.HealDamage(int val)
         {
-            _CurrentHP = Mathf.Min(_MaxHp, _CurrentHP + val);
+            _CurrentHP.Value = Mathf.Min(_MaxHp.Value, _CurrentHP.Value + val);
             UpdateHP();
         } 
 

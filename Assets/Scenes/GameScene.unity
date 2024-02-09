@@ -1634,17 +1634,25 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours: []
-  <ParentNetworkObject>k__BackingField: {fileID: 0}
-  <ChildNetworkObjects>k__BackingField: []
+  <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
+  <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
+  _isSpawnable: 1
   _isGlobal: 0
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _enableStateForwarding: 1
+  _ownerInterpolation: 1
+  _enableTeleport: 0
+  _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 2550129400
@@ -6141,7 +6149,6 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 1098759695}
   _networkObjectCache: {fileID: 1098759695}
-  CanStart: 0
 --- !u!4 &1098759694
 Transform:
   m_ObjectHideFlags: 0
@@ -6174,17 +6181,25 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 1098759693}
-  <ParentNetworkObject>k__BackingField: {fileID: 0}
-  <ChildNetworkObjects>k__BackingField: []
+  <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
+  <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
+  _isSpawnable: 1
   _isGlobal: 0
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _enableStateForwarding: 1
+  _ownerInterpolation: 1
+  _enableTeleport: 0
+  _teleportThreshold: 1
   <PrefabId>k__BackingField: 0
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 2550129400
@@ -13858,6 +13873,7 @@ GameObject:
   - component: {fileID: 6890616739187732791}
   - component: {fileID: 7823803698181737914}
   - component: {fileID: 7823803698181737915}
+  - component: {fileID: 7823803698181737916}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -13907,7 +13923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ce8bbb58966cb45a7140f32da5327a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enabled: 0
   _enableGlobalScenes: 1
   _startInOffline: 0
   _offlineScene: Assets/Scenes/LobbyScreen.unity
@@ -13968,6 +13983,24 @@ MonoBehaviour:
   _tickRate: 50
   _pingInterval: 1
   _physicsMode: 1
+--- !u!114 &7823803698181737916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2870268936423349273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e08bb003fce297d4086cf8cba5aa459a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _queuedInputs: 1
+  _dropExcessiveReplicates: 1
+  _maximumServerReplicates: 15
+  _redundancyCount: 2
+  _allowPredictedSpawning: 0
+  _reservedObjectIds: 15
 --- !u!1 &8122645400577789581
 GameObject:
   m_ObjectHideFlags: 0

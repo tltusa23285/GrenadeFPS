@@ -32,9 +32,9 @@ namespace Game.Managers
             LineCount++;
             GuiRect.Set(GuiRect.x, GuiRect.y + LineHeight, GuiRect.width, LineHeight);
             int i = 0;
-            foreach (var item in Players)
+            foreach (Player item in Players)
             {
-                if (item.IsReady)
+                if (item.IsReady.Value)
                 {
                     i++;
                 }
@@ -46,11 +46,9 @@ namespace Game.Managers
 
         public static GameManager Instance { get; private set; }
 
-        [SyncObject]
         public readonly SyncList<Player> Players = new();
 
-        [SyncVar]
-        public bool CanStart = false;
+        public readonly SyncVar<bool> CanStart = new(false);
 
         private void Awake()
         {
@@ -60,9 +58,9 @@ namespace Game.Managers
         [Server]
         public void PlayerReadyCheck()
         {
-            foreach (var item in Players)
+            foreach (Player item in Players)
             {
-                if (!item.IsReady) return;
+                if (!item.IsReady.Value) return;
             }
 
             StartGame();
@@ -71,13 +69,13 @@ namespace Game.Managers
         [Server]
         public void StartGame()
         {
-            foreach (var item in Players) { item.StartGame(); }
+            foreach (Player item in Players) { item.StartGame(); }
         }
 
         [Server]
         public void StopGame()
         {
-            foreach (var item in Players) { item.StopGame(); }
+            foreach (Player item in Players) { item.StopGame(); }
         }
     }
 }

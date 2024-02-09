@@ -87,17 +87,6 @@ namespace Game.Actors.Components
             }
         }
 
-        protected override void TimeManager_OnPostTick()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void TimeManager_OnTick()
-        {
-            throw new System.NotImplementedException();
-        }
-
-
         private Vector3 DampVelocityCache;
         private float DampAngleCache;
         private float DampDelta;

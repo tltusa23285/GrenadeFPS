@@ -133,38 +133,65 @@ namespace Game.Actors.Components
         // TODO : ideally this would be handled more abstracly, however Fish-Net currently does not support generics or protected methods for reconcile/replicate
 
         // occurs before fixed update
-        protected virtual void TimeManager_OnTick()
+        private void TimeManager_OnTick()
         {
-            if (base.IsOwner)
-            {
-                ReconcileState(default, false);
-                GetInputData(out InputData input);
-                ReplicateInput(input, false);
-            }
-            if (base.IsServer) ReplicateInput(default, true);
+            GetInputData(out InputData input);
+            ReplicateInput(input);
         }
         // occurs after fixed update
-        protected virtual void TimeManager_OnPostTick()
+        private void TimeManager_OnPostTick()
         {
-            if (base.IsServer)
+            if (base.IsServerInitialized)
             {
                 GetStateData(out StateData state);
-                ReconcileState(state, true);
+                ReconcileState(state);
             }
         }
 
+        //[Reconcile]
+        //private void ReconcileState(StateData state, bool asServer, Channel channel = Channel.Unreliable)
+        //{
+        //    ApplyStateData(state);
+        //}
         [Reconcile]
-        private void ReconcileState(StateData state, bool asServer, Channel channel = Channel.Unreliable)
+        private void ReconcileState(StateData state, Channel channel = Channel.Unreliable)
         {
             ApplyStateData(state);
         }
+        //[Replicate]
+        //private void ReplicateInput(InputData input, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
+        //{
+        //    ApplyInputData(input);
+        //}
+        private InputData LastRecievedInput;
         [Replicate]
-        private void ReplicateInput(InputData input, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
+        private void ReplicateInput(InputData input, ReplicateState state = ReplicateState.Invalid, Channel channel = Channel.Unreliable)
         {
+            //if (!base.IsOwner && !base.IsServerInitialized)
+            //{
+            //    if (state == ReplicateState.CurrentCreated || state == ReplicateState.ReplayedCreated)
+            //    {
+            //        LastRecievedInput = input;
+            //    }
+            //    else
+            //    {
+            //        if (!LastRecievedInput.Equals(default))
+            //        {
+            //            uint tick = input.GetTick();
+            //            input = LastRecievedInput;
+            //            input.SetTick(tick);
+            //        }
+            //    }
+            //}
             ApplyInputData(input);
         }
 
-        protected virtual void GetInputData(out InputData input)
+        private void GetInputData(out InputData input)
+        {
+            if (!base.IsOwner) input = default;
+            else ConstructInputData(out input);
+        }
+        protected virtual void ConstructInputData(out InputData input)
         {
             input = new InputData()
             {
@@ -173,7 +200,7 @@ namespace Game.Actors.Components
             };
             CombinedInputRotation = Vector2.zero;
         }
-        protected virtual void ApplyInputData(InputData input) 
+        protected virtual void ApplyInputData(InputData input)
         {
             InputDirection = input.MoveInput;
             InputRotation = input.RotInput;

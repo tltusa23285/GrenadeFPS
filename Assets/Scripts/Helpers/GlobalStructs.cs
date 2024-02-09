@@ -14,10 +14,21 @@ namespace Game.DataStructures
     {
         public struct InputData : IReplicateData
         {
+            public bool HasValue;
+            public bool Action1Down;
             public Vector3 MoveInput;
             public Vector2 RotInput;
             public bool JumpDown;
-            public bool Action1Down;
+
+            public InputData(Vector3 move, Vector2 rot, bool jump)
+            {
+                HasValue = true;
+                MoveInput = move;
+                RotInput = rot;
+                JumpDown = jump;
+                Action1Down = false;
+                Tick = 0;
+            }
 
             #region IReplicateData
             private uint Tick;

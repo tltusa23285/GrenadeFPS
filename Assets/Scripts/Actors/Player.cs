@@ -16,11 +16,10 @@ namespace Game
     {
         #region Sync Variables
         [Header("Synced")]
-        [SyncVar] public string PlayerID;
-        [SyncVar] public bool IsReady;
+        public readonly SyncVar<string> PlayerID = new();
+        public readonly SyncVar<bool> IsReady = new();
         #endregion
-        [SyncVar]
-        public Actor ControlledActor;
+        public readonly SyncVar<Actor> ControlledActor = new();
 
         #region NetworkCallbacks
         public override void OnStartServer()
@@ -38,12 +37,17 @@ namespace Game
         }
         #endregion
 
+        private void Awake()
+        {
+            ControlledActor.OnChange += OnControlledActorChange;
+        }
+
         private void Update()
         {
             if (!IsOwner) return;
             if (Input.GetKeyDown(KeyCode.R))
             {
-                if (this.IsReady) ServerSetNotReady();
+                if (this.IsReady.Value) ServerSetNotReady();
                 else ServerSetReady();
                 }
 
@@ -66,34 +70,31 @@ namespace Game
 
             Spawn(actorInstance, Owner);
 
+            ControlledActor.Value = actorInstance.GetComponent<Actor>();
 
-            RpcSetControlledActor(base.Owner, actorInstance);
         }
 
         [Server]
         public void StopGame()
         {
-            if (ControlledActor != null && ControlledActor.IsSpawned) ControlledActor.DespawnActor();
+            if (ControlledActor.Value != null && ControlledActor.Value.IsSpawned) ControlledActor.Value.DespawnActor();
         }
 
         [ServerRpc]
         void ServerSetReady()
         {
-            IsReady = true;
+            IsReady.Value = true;
             GameManager.Instance.PlayerReadyCheck();
         }
         [ServerRpc]
         void ServerSetNotReady()
         {
-            IsReady = false;
+            IsReady.Value = false;
             GameManager.Instance.PlayerReadyCheck();
         }
-
-        [TargetRpc]
-        private void RpcSetControlledActor(NetworkConnection conn, GameObject actorInstance)
+        private void OnControlledActorChange(Actor prev, Actor next, bool asServer)
         {
-            ControlledActor = actorInstance.GetComponent<Actor>();
-            ControlledActor.SetupActor(this.IsOwner, this.IsServer, this.IsHost);
+            ControlledActor.Value.SetupActor(this.IsOwner, this.IsServerInitialized, this.IsHostInitialized);
         }
     }
 }

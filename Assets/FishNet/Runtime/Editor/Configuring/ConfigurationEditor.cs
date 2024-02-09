@@ -3,7 +3,7 @@ using FishNet.Editing.PrefabCollectionGenerator;
 using FishNet.Object;
 using FishNet.Utility.Extension;
 using FishNet.Utility.Performance;
-using GameKit.Utilities;
+using GameKit.Dependencies.Utilities;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -25,32 +25,54 @@ namespace FishNet.Editing
     public class DeveloperMenu : MonoBehaviour
     {
         #region const.
-        private const string RELEASE_DEFINE = "FISHNET_RELEASE_MODE";
+        private const string STABLE_DEFINE = "FISHNET_STABLE_MODE";
+        private const string PREDICTIONV2_DEFINE = "PREDICTION_V2";
         private const string QOL_ATTRIBUTES_DEFINE = "DISABLE_QOL_ATTRIBUTES";
         private const string DEVELOPER_ONLY_WARNING = "If you are not a developer or were not instructed to do this by a developer things are likely to break. You have been warned.";
         #endregion
 
 
         #region Release mode.
-#if !FISHNET_RELEASE_MODE
-        [MenuItem("Fish-Networking/Switch to Release Mode", false, -1100)]
-        private static void SwitchToReleaseMode()
+//#if !FISHNET_STABLE_MODE
+//        [MenuItem("Fish-Networking/Switch to Stable", false, -1101)]
+//        private static void SwitchToStable()
+//        {
+//            bool result = RemoveOrAddDefine(STABLE_DEFINE, false);
+//            if (result)
+//                Debug.LogWarning($"Fish-Networking has been switched to Stable. Please note that experimental features may not function in this mode.");
+//        }
+//#else
+//        [MenuItem("Fish-Networking/Switch to Beta", false, -1101)]
+//        private static void SwitchToBeta()
+//        {
+//            bool result = RemoveOrAddDefine(STABLE_DEFINE, true);
+//            if (result)
+//                Debug.LogWarning($"Fish-Networking has been switched to Beta.");
+
+//        }
+//#endif
+        #endregion
+
+        #region PredictionV2.
+#if !PREDICTION_V2
+        [MenuItem("Fish-Networking/Experimental/PredictionV2/Enable", false, -999)]
+        private static void EnablePredictionV2()
         {
-            bool result = RemoveOrAddDefine(RELEASE_DEFINE, false);
+            bool result = RemoveOrAddDefine(PREDICTIONV2_DEFINE, false);
             if (result)
-                Debug.LogWarning($"Release mode has been enabled. Please note that experimental features may not function in release mode.");
+                Debug.LogWarning($"PredictionV2 has been enabled. {DEVELOPER_ONLY_WARNING}");
         }
 #else
-        [MenuItem("Fish-Networking/Switch to Development Mode", false, -1100)]
-        private static void SwitchToReleaseMode()
+        [MenuItem("Fish-Networking/Experimental/PredictionV2/Disable", false, -998)]
+        private static void DisablePredictionV2()
         {
-            bool result = RemoveOrAddDefine(RELEASE_DEFINE, true);
+            bool result = RemoveOrAddDefine(PREDICTIONV2_DEFINE, true);
             if (result)
-                Debug.LogWarning($"Development mode has been enabled.");
+                Debug.Log("PredictionV2 has been disabled.");
         }
 #endif
         #endregion
- 
+
         #region QOL Attributes
 #if DISABLE_QOL_ATTRIBUTES
         [MenuItem("Fish-Networking/Experimental/Quality of Life Attributes/Enable", false, -999)]

@@ -75,8 +75,8 @@ namespace Game.Weapons.Grenades
 
         public void Detonate()
         {
-            if(FishNet.InstanceFinder.IsClient) OnVisualDetonate();
-            if (FishNet.InstanceFinder.IsClient) OnFunctionalDetonate();
+            if (FishNet.InstanceFinder.IsClientStarted) OnVisualDetonate();
+            if (FishNet.InstanceFinder.IsServerStarted) OnFunctionalDetonate();
         }
 
         /// <summary>
