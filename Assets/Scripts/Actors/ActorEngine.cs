@@ -7,32 +7,39 @@ using Game.DataStructures.Network;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
+using Game.Interfaces;
 
 namespace Game.Actors.Components
 {
     /// <summary>
     /// Responsible for the physical movement of an actor
     /// </summary>
-    public abstract class ActorEngine : NetworkBehaviour
+    public abstract class ActorEngine : NetworkBehaviour, IForceable
     {
+        [Header("References")]
+        [SerializeField] protected Rigidbody RigidBody;
         [SerializeField] protected Camera Camera;
         [SerializeField] protected Transform HeadTrans;
         [SerializeField] protected Transform BodyTrans;
+
         protected Transform CameraTrans;
 
+        [Header("Look Settings")]
+        [SerializeField] protected float LookSpeed = 1;
+        [SerializeField] protected float VertLookClamp = 85;
 
         protected Vector3 InputDirection = Vector3.zero;
         protected Vector3 InputRotation = Vector3.zero;
 
         protected Vector3 CombinedInputRotation = Vector3.zero; // sum of input rotation since last network tick
-
-        [SerializeField] protected ActorEngineStats Stats;
+        protected Vector3 CurrentRotation;
 
         private void Awake()
         {
             Assert.IsNotNull(HeadTrans);
             Assert.IsNotNull(Camera);
             Assert.IsNotNull(BodyTrans);
+            Assert.IsNotNull(RigidBody);
 
             CameraTrans = Camera.transform;
             CameraTrans.position = HeadTrans.position;
@@ -70,7 +77,7 @@ namespace Game.Actors.Components
         /// Normalizes given direction and moves actor in direction based on speed
         /// </summary>
         /// <param name="input"></param>
-        public virtual void SetInputDirection(Vector2 input)
+        public void SetInputDirection(Vector2 input)
         {
             InputDirection.x = input.normalized.x;
             InputDirection.z = input.normalized.y;
@@ -81,14 +88,27 @@ namespace Game.Actors.Components
         /// Internally swizzles values as needed
         /// </summary>
         /// <param name="input"></param>
-        public virtual void SetInputRotation(Vector2 input)
+        public void SetInputRotation(Vector2 input)
         {
-            InputRotation.x = input.y * Stats.LookSpeed;
-            InputRotation.y = input.x * Stats.LookSpeed;
+            InputRotation.x = input.y * LookSpeed;
+            InputRotation.y = input.x * LookSpeed;
 
             CombinedInputRotation += InputRotation;
         }
-        public virtual void OnFrameUpdate(in float deltaTime) { }
+
+        protected virtual void ApplyRotation(float deltaTime)
+        {
+            CurrentRotation += InputRotation;
+            CurrentRotation.x = Mathf.Clamp(CurrentRotation.x, -VertLookClamp, VertLookClamp);
+            BodyTrans.localRotation = Quaternion.Euler(0, CurrentRotation.y, 0);
+            HeadTrans.localRotation = Quaternion.Euler(CurrentRotation.x, 0, 0);
+        }
+
+        public virtual void OnFrameUpdate(in float deltaTime) 
+        {
+            ApplyRotation(deltaTime);
+        }
+
         public virtual void OnPhysicsUpdate(in float deltaTime) { }
 
         private void LateUpdate()
@@ -111,7 +131,7 @@ namespace Game.Actors.Components
             SubscribeToTimeManager(false);
         }
 
-        public void SubscribeToTimeManager(bool subscribe)
+        private void SubscribeToTimeManager(bool subscribe)
         {
             if (base.TimeManager == null) return;
             if (subscribe == IsSubbedToTime) return;
@@ -148,41 +168,15 @@ namespace Game.Actors.Components
             }
         }
 
-        //[Reconcile]
-        //private void ReconcileState(StateData state, bool asServer, Channel channel = Channel.Unreliable)
-        //{
-        //    ApplyStateData(state);
-        //}
         [Reconcile]
         private void ReconcileState(StateData state, Channel channel = Channel.Unreliable)
         {
             ApplyStateData(state);
         }
-        //[Replicate]
-        //private void ReplicateInput(InputData input, bool asServer, Channel channel = Channel.Unreliable, bool replaying = false)
-        //{
-        //    ApplyInputData(input);
-        //}
-        private InputData LastRecievedInput;
+
         [Replicate]
         private void ReplicateInput(InputData input, ReplicateState state = ReplicateState.Invalid, Channel channel = Channel.Unreliable)
         {
-            //if (!base.IsOwner && !base.IsServerInitialized)
-            //{
-            //    if (state == ReplicateState.CurrentCreated || state == ReplicateState.ReplayedCreated)
-            //    {
-            //        LastRecievedInput = input;
-            //    }
-            //    else
-            //    {
-            //        if (!LastRecievedInput.Equals(default))
-            //        {
-            //            uint tick = input.GetTick();
-            //            input = LastRecievedInput;
-            //            input.SetTick(tick);
-            //        }
-            //    }
-            //}
             ApplyInputData(input);
         }
 
@@ -226,6 +220,19 @@ namespace Game.Actors.Components
             BodyTrans.rotation = Quaternion.Euler(0, state.Rotation.y, 0);
             HeadTrans.rotation = Quaternion.Euler(state.Rotation.x, 0, 0);
         }
+
+        #endregion
+
+        #region IForceable
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            RigidBody.AddForce(force, mode);
+        }
+
+        public void AddExplosionForce(float force, Vector3 origin, float radius, ForceMode mode)
+        {
+            RigidBody.AddExplosionForce(force, origin, radius, 0, mode);
+        } 
         #endregion
     } 
 }

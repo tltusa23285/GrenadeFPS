@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Game.Interfaces;
+using FishNet.Object;
+using FishNet;
+using UnityEngine.VFX;
 
 namespace Game.Weapons.Grenades
 {
@@ -17,15 +20,15 @@ namespace Game.Weapons.Grenades
         protected override void OnSetDown()
         {
         }
-
         protected override void OnVisualDetonate()
         {
-            Debug.DrawRay(Root.transform.position, Vector3.up * Radius,         Color.red , 3f);
-            Debug.DrawRay(Root.transform.position, Vector3.down * Radius,       Color.red , 3f);
-            Debug.DrawRay(Root.transform.position, Vector3.left * Radius,       Color.red , 3f);
-            Debug.DrawRay(Root.transform.position, Vector3.right * Radius,      Color.red , 3f);
-            Debug.DrawRay(Root.transform.position, Vector3.forward * Radius,    Color.red , 3f);
-            Debug.DrawRay(Root.transform.position, Vector3.back * Radius,       Color.red , 3f);
+            //InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVFX("ExplosiveVFX", this.transform.position, this.transform.rotation, out GameObject go);
+            //if (go.TryGetComponent(out VisualEffect vfx))
+            //{
+            //    vfx.SetFloat("Size", Radius);
+            //    vfx.SetFloat("LifeTime", 1);
+            //    vfx.Play();
+            //}
         }
 
         protected override void OnFunctionalDetonate()
@@ -36,9 +39,9 @@ namespace Game.Weapons.Grenades
                 {
                     dmg.TakeDamage(Damage);
                 }
-                if (item.TryGetComponent(out Rigidbody rb))
+                if (item.TryGetComponent(out IForceable rb))
                 {
-                    rb.AddExplosionForce(PushForce, Root.transform.position, Radius, 0, ForceMode.VelocityChange);
+                    rb.AddExplosionForce(PushForce, Root.transform.position, Radius, ForceMode.VelocityChange);
                 }
             }
         }

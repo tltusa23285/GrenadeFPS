@@ -18,22 +18,22 @@ namespace Game
         [Header("Synced")]
         public readonly SyncVar<string> PlayerID = new();
         public readonly SyncVar<bool> IsReady = new();
-        #endregion
         public readonly SyncVar<Actor> ControlledActor = new();
+        #endregion
 
         #region NetworkCallbacks
         public override void OnStartServer()
         {
             base.OnStartServer();
 
-            GameManager.Instance.Players.Add(this);
+            InstanceFinder.GetInstance<GameManager>().Players.Add(this);
         }
 
         public override void OnStopServer()
         {
             base.OnStopServer();
 
-            GameManager.Instance.Players.Remove(this);
+            InstanceFinder.GetInstance<GameManager>().Players.Remove(this);
         }
         #endregion
 
@@ -71,7 +71,6 @@ namespace Game
             Spawn(actorInstance, Owner);
 
             ControlledActor.Value = actorInstance.GetComponent<Actor>();
-
         }
 
         [Server]
@@ -84,13 +83,13 @@ namespace Game
         void ServerSetReady()
         {
             IsReady.Value = true;
-            GameManager.Instance.PlayerReadyCheck();
+            InstanceFinder.GetInstance<GameManager>().PlayerReadyCheck();
         }
         [ServerRpc]
         void ServerSetNotReady()
         {
             IsReady.Value = false;
-            GameManager.Instance.PlayerReadyCheck();
+            InstanceFinder.GetInstance<GameManager>().PlayerReadyCheck();
         }
         private void OnControlledActorChange(Actor prev, Actor next, bool asServer)
         {

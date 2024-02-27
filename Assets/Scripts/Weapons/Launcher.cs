@@ -2,6 +2,8 @@ using Game.Actors;
 using UnityEngine;
 using UnityEngine.Assertions;
 using FishNet.Object;
+using Game.DataStructures.Grenades;
+using Game.Weapons.Grenades;
 
 namespace Game.Weapons
 {
@@ -28,8 +30,9 @@ namespace Game.Weapons
         protected float ShotTimer;
 
         private Actor ActorOwner;
-
         private GrenadeSpawner GrenadeSpawner;
+
+        public GrenadeComponentList UsedComponents;
 
         private void Awake()
         {
@@ -63,28 +66,28 @@ namespace Game.Weapons
             if (ShotTimer < ShotCooldown) return;
             ShotTimer = 0;
 
-            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce);
-            FireServer(Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce, base.TimeManager.Tick);
+            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(UsedComponents, Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce);
+            FireServer(UsedComponents, Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce, base.TimeManager.Tick);
         }
 
         [ServerRpc]
-        private void FireServer(Vector3 position, Quaternion rotation, Actor owner, float launchForce, uint tick)
+        private void FireServer(GrenadeComponentList compList, Vector3 position, Quaternion rotation, Actor owner, float launchForce, uint tick)
         {
             float passed_time = (float)base.TimeManager.TimePassed(tick, false);
             passed_time = Mathf.Min(MAX_PASSED_TIME / 2f, passed_time);
 
-            GrenadeSpawner.SpawnGrenadeLocal(position, rotation, owner, launchForce, passed_time);
+            GrenadeSpawner.SpawnGrenadeLocal(compList, position, rotation, owner, launchForce, passed_time);
 
-            FireObserver(position, rotation, owner, launchForce, tick);
+            FireObserver(compList, position, rotation, owner, launchForce, tick);
         }
 
         [ObserversRpc(ExcludeOwner = true)]
-        private void FireObserver(Vector3 position, Quaternion rotation, Actor owner, float launchForce, uint tick)
+        private void FireObserver(GrenadeComponentList compList, Vector3 position, Quaternion rotation, Actor owner, float launchForce, uint tick)
         {
             float passed_time = (float)base.TimeManager.TimePassed(tick, false);
             passed_time = Mathf.Min(MAX_PASSED_TIME / 2f, passed_time);
 
-            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(position, rotation, owner, launchForce, passed_time);
+            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(compList, position, rotation, owner, launchForce, passed_time);
         }
     }
 }

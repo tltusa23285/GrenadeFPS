@@ -50,41 +50,42 @@ namespace Game.Actors.Components
         Vector3 CameraForward;
         private void FixedUpdate()
         {
-            SetUpDirection(out RaycastHit hit);
+            //SetUpDirection(out RaycastHit hit);
 
-            BodyTrans.rotation = Quaternion.FromToRotation(BodyTrans.up, UpDirection) * BodyTrans.rotation;
+            //BodyTrans.rotation = Quaternion.FromToRotation(BodyTrans.up, UpDirection) * BodyTrans.rotation;
 
-            HeadTrans.position = BodyTrans.position + (UpDirection * Stats.HeadHeight);
-            //HeadTrans.rotation = Quaternion.FromToRotation(HeadTrans.up, up) * HeadTrans.rotation;
-            HeadTrans.rotation = BodyTrans.rotation;
+            //HeadTrans.position = BodyTrans.position + (UpDirection * Stats.HeadHeight);
+            ////HeadTrans.rotation = Quaternion.FromToRotation(HeadTrans.up, up) * HeadTrans.rotation;
+            //HeadTrans.rotation = BodyTrans.rotation;
 
-            Camera.transform.localRotation = Quaternion.Euler(InputRotation.x, InputRotation.y, 0);
+            //Camera.transform.localRotation = Quaternion.Euler(InputRotation.x, InputRotation.y, 0);
 
-            CameraForward = Camera.transform.forward;
-            CameraForward = HeadTrans.InverseTransformDirection(CameraForward);
-            CameraForward = HeadTrans.TransformDirection(CameraForward.FlattenY().normalized);
+            //CameraForward = Camera.transform.forward;
+            //CameraForward = HeadTrans.InverseTransformDirection(CameraForward);
+            //CameraForward = HeadTrans.TransformDirection(CameraForward.FlattenY().normalized);
 
-            Vector3 dir = ((InputDirection.z * CameraForward) + (InputDirection.x * Camera.transform.right));
+            //Vector3 dir = ((InputDirection.z * CameraForward) + (InputDirection.x * Camera.transform.right));
 
-            float accel = (dir * Stats.MoveSpeed).magnitude - Body.velocity.magnitude;
+            //float accel = (dir * Stats.MoveSpeed).magnitude - Body.velocity.magnitude;
 
-            Body.AddForce(dir, ForceMode.VelocityChange);
+            //Body.AddForce(dir, ForceMode.VelocityChange);
         }
 
         private void SetUpDirection(out RaycastHit hit)
         {
-            if (Physics.Raycast(Body.position + (Stats.HeadHeight * UpDirection), 
-                                -UpDirection, 
-                out hit, Stats.HeadHeight + 0.1f, Stats.GroundedMask))
-            {
-                UpDirection = hit.normal;
-            }
-            else { UpDirection = Vector3.up; }
+            hit = default;
+            //if (Physics.Raycast(Body.position + (Stats.HeadHeight * UpDirection), 
+            //                    -UpDirection, 
+            //    out hit, Stats.HeadHeight + 0.1f, Stats.GroundedMask))
+            //{
+            //    UpDirection = hit.normal;
+            //}
+            //else { UpDirection = Vector3.up; }
 
-            if (hit.distance > 0.5f)
-            {
-                Body.AddForce(-UpDirection * 9.8f, ForceMode.Acceleration);
-            }
+            //if (hit.distance > 0.5f)
+            //{
+            //    Body.AddForce(-UpDirection * 9.8f, ForceMode.Acceleration);
+            //}
         }
 
         private Vector3 DampVelocityCache;

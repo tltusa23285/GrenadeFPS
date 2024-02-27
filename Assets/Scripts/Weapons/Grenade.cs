@@ -1,10 +1,11 @@
 using Game.Actors;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.Interfaces;
 
 namespace Game.Weapons.Grenades
 {
-    public class Grenade : MonoBehaviour
+    public class Grenade : MonoBehaviour, IForceable
     {
         public Actor Owner { get; private set; }
 
@@ -29,8 +30,6 @@ namespace Game.Weapons.Grenades
             GrenadeSpawner = FishNet.InstanceFinder.GetInstance<GrenadeSpawner>();
 
             RB = GetComponent<Rigidbody>();
-            RB.isKinematic = true;
-            RB.useGravity = false;
             Collider = GetComponent<SphereCollider>();
         }
 
@@ -134,6 +133,18 @@ namespace Game.Weapons.Grenades
             {
                 GrenadeSpawner.DespawnGrenade(this);
             }
+        }
+
+        public void AddForce(Vector3 force, ForceMode mode)
+        {
+            foreach (var item in Components) { item.ModifyDirectForce(ref force, mode); }
+            RB.AddForce(force, mode);
+        }
+
+        public void AddExplosionForce(float force, Vector3 origin, float radius, ForceMode mode)
+        {
+            foreach (var item in Components) { item.ModifyExplosionForce(ref force, origin, radius, mode); }
+            RB.AddExplosionForce(force, origin, radius, 0, mode);
         }
     }
 }

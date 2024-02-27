@@ -39,6 +39,7 @@ namespace Game.Actors
         public void SetupActor(in bool isOwner, in bool isServer, in bool isHost)
         {
             this.Engine.Setup(isOwner, isServer, isHost);
+            this.gameObject.name = $"Player-Actor:{this.OwnerId}";
         }
 
         public void DespawnActor()

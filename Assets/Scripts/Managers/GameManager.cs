@@ -5,6 +5,8 @@ using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using Game.Actors;
 using System.Linq;
+using FishNet;
+using Game.Weapons;
 
 namespace Game.Managers
 {
@@ -43,16 +45,13 @@ namespace Game.Managers
         } 
         #endregion
 
-
-        public static GameManager Instance { get; private set; }
-
         public readonly SyncList<Player> Players = new();
 
         public readonly SyncVar<bool> CanStart = new(false);
 
         private void Awake()
         {
-            Instance = this;
+            InstanceFinder.RegisterInstance<GameManager>(this);
         }
 
         [Server]

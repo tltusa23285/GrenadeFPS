@@ -18,7 +18,7 @@ using Unity.CompilationPipeline.Common.ILPostProcessing;
 
 namespace FishNet.CodeGenerating.ILCore
 {
-    public class FishNetILPP : ILPostProcessor 
+    public class FishNetILPP : ILPostProcessor
     {
         #region Const.
         internal const string RUNTIME_ASSEMBLY_NAME = "FishNet.Runtime";

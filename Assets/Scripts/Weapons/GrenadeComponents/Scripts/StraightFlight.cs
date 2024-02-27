@@ -15,7 +15,7 @@ namespace Game.Weapons.Grenades
         protected override void OnSetup()
         {
             rb = Root.RB;
-            rb.isKinematic = true;
+            // rb.isKinematic = true;
             rb.useGravity = false;
 
             DefaultInterpolation = rb.interpolation;
@@ -23,12 +23,16 @@ namespace Game.Weapons.Grenades
             trans = rb.transform;
             Speed = Root.LaunchForce;
 
-            rb.interpolation = RigidbodyInterpolation.Interpolate;
+            //rb.interpolation = RigidbodyInterpolation.Interpolate;
+
+            rb.AddForce(trans.forward * Speed, ForceMode.VelocityChange);
         }
 
         protected override void OnSetDown()
         {
             rb.interpolation = DefaultInterpolation;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
         }
 
         Ray TravelRay;
@@ -36,19 +40,30 @@ namespace Game.Weapons.Grenades
         RaycastHit Hit;
         public override void OnPhysicsUpdate(in float time)
         {
-            TravelRay.origin = rb.position;
-            TravelRay.direction = trans.forward;
-            TravelDist = Speed * time;
+            rb.AddForce(trans.forward * Speed, ForceMode.Acceleration);
+            //TravelRay.origin = rb.position;
+            //TravelRay.direction = trans.forward;
+            //TravelDist = Speed * time;
 
-            if (Physics.Raycast(TravelRay, out Hit, TravelDist))
-            {
-                Speed = 0;
-                rb.MovePosition(Hit.point);
-            }
-            else
-            {
-                rb.MovePosition(rb.position + (trans.forward * TravelDist));
-            }
+            //if (Physics.Raycast(TravelRay, out Hit, TravelDist))
+            //{
+            //    Speed = 0;
+            //    rb.MovePosition(Hit.point);
+            //}
+            //else
+            //{
+            //    rb.MovePosition(rb.position + (trans.forward * TravelDist));
+            //}
+        }
+
+        public override void ModifyDirectForce(ref Vector3 force, in ForceMode mode)
+        {
+            force /= 2;
+        }
+
+        public override void ModifyExplosionForce(ref float force, in Vector3 origin, in float radius, ForceMode mode)
+        {
+            force /= 2;
         }
     }
 }

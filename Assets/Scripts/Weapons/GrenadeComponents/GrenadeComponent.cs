@@ -4,9 +4,9 @@ namespace Game.Weapons.Grenades
 {
     public abstract class GrenadeComponent : MonoBehaviour
     {
-        public GameObject Prefab {  get; set; }
-
         protected Grenade Root;
+
+        public string PoolID;
 
         /// <summary>
         /// Initializes the component, completely resetting its state
@@ -34,7 +34,6 @@ namespace Game.Weapons.Grenades
             this.transform.localPosition = Vector3.zero;
             this.transform.localRotation = Quaternion.identity;
             this.gameObject.SetActive(true);
-
             OnSetup();
         }
         /// <summary>
@@ -44,7 +43,8 @@ namespace Game.Weapons.Grenades
         {
             OnSetDown();
 
-            this.transform.parent = null;
+            // TODO : currently grenade spawner handles parents of objects going in and out of pools
+            //this.transform.parent = null; 
             Root = null;
             this.gameObject.SetActive(false);
         }
@@ -87,5 +87,8 @@ namespace Game.Weapons.Grenades
         /// Executes any functional behaviour when root is detonated
         /// </summary>
         protected virtual void OnFunctionalDetonate() { }
+
+        public virtual void ModifyDirectForce(ref Vector3 force, in ForceMode mode) { }
+        public virtual void ModifyExplosionForce(ref float force, in Vector3 origin, in float radius, ForceMode mode) { }
     }
 }

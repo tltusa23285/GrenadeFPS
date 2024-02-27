@@ -43,7 +43,6 @@ namespace Game.DataStructures
             public Vector2 Rotation;
             public Vector3 Velocity;
 
-
             #region IReconcileData
             private uint Tick;
             public uint GetTick() => Tick;

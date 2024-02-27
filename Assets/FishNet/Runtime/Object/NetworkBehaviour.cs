@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [assembly: InternalsVisibleTo(UtilityConstants.CODEGEN_ASSEMBLY_NAME)]
-namespace FishNet.Object 
+namespace FishNet.Object
 {
     /// <summary>
     /// Scripts which inherit from NetworkBehaviour can be used to gain insight of, and perform actions on the network.
