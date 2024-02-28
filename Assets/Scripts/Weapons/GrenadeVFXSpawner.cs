@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using FishNet;
+using Game.Interfaces;
+using Game.VfxScripts;
 
 namespace Game.Weapons.Grenades
 {
     public class GrenadeVFXSpawner : MonoBehaviour
     {
         private Dictionary<string, GameObject> Sources = new Dictionary<string, GameObject>();
-        private Dictionary<string, Queue<GameObject>> InactivePools = new Dictionary<string, Queue<GameObject>>();
+        private Dictionary<string, Queue<VfxObject>> Pool = new Dictionary<string, Queue<VfxObject>>();
 
         public GrenadeComponentMap AvailableAssets;
 
@@ -27,49 +29,56 @@ namespace Game.Weapons.Grenades
         public void Initialize()
         {
             Sources.Clear();
-            foreach (var item in InactivePools)
+            foreach (var item in Pool)
             {
                 foreach (var obj in item.Value)
                 {
-                    Destroy(obj);
+                    obj.Dispose();
                 }
             }
-            InactivePools.Clear();
+            Pool.Clear();
 
             foreach (var item in AvailableAssets.AvailableComponents)
             {
                 GameObject source = Addressables.LoadAssetAsync<GameObject>(item.AddressableName).WaitForCompletion();
+                if (!source.TryGetComponent(out VfxObject ve))
+                {
+                    Debug.LogError($"Source of id {item.Identifier} does not implement IVisualEffect");
+                    continue;
+                }
                 Sources.Add(item.Identifier, source);
-                InactivePools.Add(item.Identifier, new Queue<GameObject>());
+                Pool.Add(item.Identifier, new Queue<VfxObject>());
             }
         }
 
-        private bool GetAsset(in string id, out GameObject asset)
+        private bool GetAsset(in string id, out VfxObject asset)
         {
             asset = null;
             if (!Sources.ContainsKey(id)) return false;
-            if (!InactivePools.ContainsKey(id)) return false;
-            if (!InactivePools[id].TryDequeue(out asset))
+            if (!Pool.ContainsKey(id)) return false;
+            if (!Pool[id].TryDequeue(out asset))
             {
-                asset = Instantiate(Sources[id]);
+                GameObject go = Instantiate(Sources[id]);
+                asset = go.GetComponent<VfxObject>();
             }
 
             return asset != null;
         }
 
-        private void ReturnAsset(in string id, GameObject asset)
+        private void ReturnAsset(in string id, VfxObject asset)
         {
-            if (!InactivePools.ContainsKey(id))
+            if (!Pool.ContainsKey(id))
             {
-                Destroy(asset);
+                asset.Dispose();
             }
             else
             {
-                InactivePools[id].Enqueue(asset);
+                asset.Stop();
+                Pool[id].Enqueue(asset);
             }
         }
 
-        public bool SpawnVfx(in string id, in Vector3 position, in Quaternion rotation, in float lifetime, out GameObject vfx)
+        public bool SpawnVfx(in string id, in Vector3 position, in Quaternion rotation, in float lifetime, out VfxObject vfx)
         {
             vfx = null;
 
@@ -86,7 +95,7 @@ namespace Game.Weapons.Grenades
             return false;
         }
 
-        IEnumerator ReturnAfterTime(float lifetime, string id, GameObject asset)
+        IEnumerator ReturnAfterTime(float lifetime, string id, VfxObject asset)
         {
             yield return new WaitForSeconds(lifetime);
             ReturnAsset(id, asset);

@@ -5,6 +5,7 @@ using Game.Interfaces;
 using FishNet.Object;
 using FishNet;
 using UnityEngine.VFX;
+using Game.VfxScripts;
 
 namespace Game.Weapons.Grenades
 {
@@ -22,14 +23,13 @@ namespace Game.Weapons.Grenades
         }
         protected override void OnVisualDetonate()
         {
-            if (InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVfx("ExplosiveVFX", this.transform.position, this.transform.rotation, .25f, out GameObject go))
+            if (InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVfx("ExplosiveVFX", this.transform.position, this.transform.rotation, .25f, out VfxObject go))
             {
                 if (go.TryGetComponent(out VisualEffect vfx))
                 {
-                    vfx.SetFloat("Size", Radius);
-                    vfx.SetFloat("Lifetime", .25f);
-                    vfx.Play();
+                    vfx.SetFloat("Radius", Radius);
                 }
+                go.Play();
             }
         }
 
