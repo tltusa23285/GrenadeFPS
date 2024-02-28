@@ -89,6 +89,7 @@ namespace Game.Weapons.Grenades
 
             if (vfx != null)
             {
+                vfx.Duration = lifetime;
                 StartCoroutine(ReturnAfterTime(lifetime, id, vfx));
                 return true;
             }

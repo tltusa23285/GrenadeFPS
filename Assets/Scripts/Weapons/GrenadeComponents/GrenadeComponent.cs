@@ -6,7 +6,7 @@ namespace Game.Weapons.Grenades
     {
         protected Grenade Root;
 
-        public string PoolID;
+        [HideInInspector] public string PoolID;
 
         /// <summary>
         /// Initializes the component, completely resetting its state
@@ -52,12 +52,12 @@ namespace Game.Weapons.Grenades
         /// <summary>
         /// Invoked when setup/spawned, this should fully reset this component to a fresh state
         /// </summary>
-        protected abstract void OnSetup();
+        protected virtual void OnSetup() { }
 
         /// <summary>
         /// Invoked when setdown/despawned, this should halt any looping behaviour, and clean up any lingering objcts needed for function
         /// </summary>
-        protected abstract void OnSetDown();
+        protected virtual void OnSetDown() { }
 
         /// <summary>
         /// Update method controlled/called by roots Update

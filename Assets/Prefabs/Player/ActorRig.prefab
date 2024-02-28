@@ -546,9 +546,9 @@ MonoBehaviour:
   _fireRate: 2
   UsedComponents:
     Components:
-    - Explosive
-    - ContactDetonate
-    - StraightFlight
+    - Implosive
+    - TimedDetonate
+    - Lob
 --- !u!114 &7863646806697487767
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,21 +9,14 @@ using Game.VfxScripts;
 
 namespace Game.Weapons.Grenades
 {
-    public class Explosive : GrenadeComponent
+    public class Implosive : GrenadeComponent
     {
         [SerializeField] private int Damage = 50;
-        [SerializeField] private float PushForce = 20;
+        [SerializeField] private float PullForce = 20;
         [SerializeField] private float Radius = 10;
-        protected override void OnSetup()
-        {
-        }
-
-        protected override void OnSetDown()
-        {
-        }
         protected override void OnVisualDetonate()
         {
-            if (InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVfx("ExplosiveVFX", this.transform.position, this.transform.rotation, .25f, out VfxObject go))
+            if (InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVfx("ImplosiveVFX", this.transform.position, this.transform.rotation, 0.25f, out VfxObject go))
             {
                 if (go.TryGetComponent(out VisualEffect vfx))
                 {
@@ -43,7 +36,7 @@ namespace Game.Weapons.Grenades
                 }
                 if (item.TryGetComponent(out IForceable rb))
                 {
-                    rb.AddExplosionForce(PushForce, Root.transform.position, Radius, ForceMode.VelocityChange);
+                    rb.AddExplosionForce(-PullForce, Root.transform.position, Radius, ForceMode.VelocityChange);
                 }
             }
         }

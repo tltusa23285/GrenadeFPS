@@ -19,6 +19,7 @@ namespace Game.Weapons.Grenades
         public float LaunchForce { get; private set; }
         public float CatchupTime { get; private set; }
         public Rigidbody RB {get; private set; }
+        public Transform Trans { get; private set; }
         public SphereCollider Collider { get; private set; }
 
         public List<GrenadeComponent> Components = new List<GrenadeComponent>();
@@ -29,6 +30,7 @@ namespace Game.Weapons.Grenades
         {
             GrenadeSpawner = FishNet.InstanceFinder.GetInstance<GrenadeSpawner>();
 
+            Trans = GetComponent<Transform>();
             RB = GetComponent<Rigidbody>();
             Collider = GetComponent<SphereCollider>();
         }
