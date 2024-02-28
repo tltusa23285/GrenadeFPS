@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4598.492, g: 3254.0188, b: 3240.1055, a: 1}
+  m_IndirectSpecularColor: {r: 4601.459, g: 3248.4963, b: 3218.6438, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1578,6 +1578,7 @@ GameObject:
   - component: {fileID: 624359490}
   - component: {fileID: 624359489}
   - component: {fileID: 624359491}
+  - component: {fileID: 624359492}
   m_Layer: 0
   m_Name: GrenadeSpawner
   m_TagString: Untagged
@@ -1665,6 +1666,23 @@ MonoBehaviour:
   _scenePathHash: 2550129400
   <SceneId>k__BackingField: 10952722377404589620
   <AssetPathHash>k__BackingField: 0
+--- !u!114 &624359492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624359487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5c6eb53e7035b14e9949a21350e47f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AvailableAssets:
+    AvailableComponents:
+    - DisplayName: Explosive
+      Identifier: ExplosiveVFX
+      Description: 
 --- !u!43 &705894272
 Mesh:
   m_ObjectHideFlags: 0

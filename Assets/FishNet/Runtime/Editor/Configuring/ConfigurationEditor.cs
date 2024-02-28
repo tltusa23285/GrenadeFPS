@@ -33,24 +33,24 @@ namespace FishNet.Editing
 
 
         #region Release mode.
-//#if !FISHNET_STABLE_MODE
-//        [MenuItem("Fish-Networking/Switch to Stable", false, -1101)]
-//        private static void SwitchToStable()
-//        {
-//            bool result = RemoveOrAddDefine(STABLE_DEFINE, false);
-//            if (result)
-//                Debug.LogWarning($"Fish-Networking has been switched to Stable. Please note that experimental features may not function in this mode.");
-//        }
-//#else
-//        [MenuItem("Fish-Networking/Switch to Beta", false, -1101)]
-//        private static void SwitchToBeta()
-//        {
-//            bool result = RemoveOrAddDefine(STABLE_DEFINE, true);
-//            if (result)
-//                Debug.LogWarning($"Fish-Networking has been switched to Beta.");
+#if !FISHNET_STABLE_MODE
+        [MenuItem("Fish-Networking/Switch to Stable", false, -1101)]
+        private static void SwitchToStable()
+        {
+            bool result = RemoveOrAddDefine(STABLE_DEFINE, false);
+            if (result)
+                Debug.LogWarning($"Fish-Networking has been switched to Stable. Please note that experimental features may not function in this mode.");
+        }
+#else
+        [MenuItem("Fish-Networking/Switch to Beta", false, -1101)]
+        private static void SwitchToBeta()
+        {
+            bool result = RemoveOrAddDefine(STABLE_DEFINE, true);
+            if (result)
+                Debug.LogWarning($"Fish-Networking has been switched to Beta.");
 
-//        }
-//#endif
+        }
+#endif
         #endregion
 
         #region PredictionV2.
@@ -140,13 +140,26 @@ namespace FishNet.Editing
                 return;
             }
 #endif
+            if (ApplicationState.IsPlaying())
+            {
+                Debug.Log($"SceneIds cannot be rebuilt while in play mode.");
+                return;
+            }
+
             int generatedCount = 0;
+            int processedScenes = 0;
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene s = SceneManager.GetSceneAt(i);
+                if (!s.isLoaded)
+                {
+                    Debug.Log($"Skipped scene {s.name} because it is not loaded.");
+                    continue;
+                }
 
+                processedScenes++;
                 List<NetworkObject> nobs = CollectionCaches<NetworkObject>.RetrieveList();
-                Scenes.GetSceneNetworkObjects(s, false, ref nobs);
+                Scenes.GetSceneNetworkObjects(s, false, false, ref nobs);
                 int nobCount = nobs.Count;
                 for (int z = 0; z < nobCount; z++)
                 {
@@ -159,7 +172,7 @@ namespace FishNet.Editing
                 CollectionCaches<NetworkObject>.Store(nobs);
             }
 
-            Debug.Log($"Generated sceneIds for {generatedCount} objects over {SceneManager.sceneCount} scenes. Please save your open scenes.");
+            Debug.Log($"Generated sceneIds for {generatedCount} objects over {processedScenes} scenes. Please save your open scenes.");
         }
 
 
@@ -218,7 +231,7 @@ namespace FishNet.Editing
                 Scene s = SceneManager.GetSceneAt(i);
 
                 List<NetworkObject> nobs = CollectionCaches<NetworkObject>.RetrieveList();
-                Scenes.GetSceneNetworkObjects(s, false, ref nobs);
+                Scenes.GetSceneNetworkObjects(s, false, false, ref nobs);
                 int nobsCount = nobs.Count;
                 for (int z = 0; z < nobsCount; z++)
                 {

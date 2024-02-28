@@ -1,20 +1,22 @@
 using Game.DataStructures.Grenades;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using FishNet;
 
 namespace Game.Weapons.Grenades
 {
     public class GrenadeVFXSpawner : MonoBehaviour
     {
         private Dictionary<string, GameObject> Sources = new Dictionary<string, GameObject>();
-        private Dictionary<GameObject, Queue<GameObject>> Pools = new Dictionary<GameObject, Queue<GameObject>>();
+        private Dictionary<string, Queue<GameObject>> InactivePools = new Dictionary<string, Queue<GameObject>>();
 
         public GrenadeComponentMap AvailableAssets;
 
         private void Awake()
         {
-            //InstanceFinder.RegisterInstance(this);
+            InstanceFinder.RegisterInstance(this);
         }
 
         private void Start()
@@ -25,20 +27,20 @@ namespace Game.Weapons.Grenades
         public void Initialize()
         {
             Sources.Clear();
-            foreach (var item in Pools)
+            foreach (var item in InactivePools)
             {
                 foreach (var obj in item.Value)
                 {
                     Destroy(obj);
                 }
             }
-            Pools.Clear();
+            InactivePools.Clear();
 
             foreach (var item in AvailableAssets.AvailableComponents)
             {
                 GameObject source = Addressables.LoadAssetAsync<GameObject>(item.AddressableName).WaitForCompletion();
                 Sources.Add(item.Identifier, source);
-                Pools.Add(source, new Queue<GameObject>());
+                InactivePools.Add(item.Identifier, new Queue<GameObject>());
             }
         }
 
@@ -46,8 +48,8 @@ namespace Game.Weapons.Grenades
         {
             asset = null;
             if (!Sources.ContainsKey(id)) return false;
-            if (!Pools.ContainsKey(Sources[id])) return false;
-            if (!Pools[Sources[id]].TryDequeue(out asset))
+            if (!InactivePools.ContainsKey(id)) return false;
+            if (!InactivePools[id].TryDequeue(out asset))
             {
                 asset = Instantiate(Sources[id]);
             }
@@ -57,31 +59,37 @@ namespace Game.Weapons.Grenades
 
         private void ReturnAsset(in string id, GameObject asset)
         {
-            if (!Pools.ContainsKey(Sources[id]))
+            if (!InactivePools.ContainsKey(id))
             {
                 Destroy(asset);
             }
             else
             {
-                Pools[Sources[id]].Enqueue(asset);
+                InactivePools[id].Enqueue(asset);
             }
         }
 
-        public bool SpawnVfx(in string id, in Vector3 position, in Quaternion rotation, out GameObject vfx)
+        public bool SpawnVfx(in string id, in Vector3 position, in Quaternion rotation, in float lifetime, out GameObject vfx)
         {
             vfx = null;
 
-            //GetAsset(id, out vfx);
+            if(!GetAsset(id, out vfx)) return false;
 
-            //vfx.transform.position = position;
-            //vfx.transform.rotation = rotation;
+            vfx.transform.position = position;
+            vfx.transform.rotation = rotation;
 
-            return vfx != null;
+            if (vfx != null)
+            {
+                StartCoroutine(ReturnAfterTime(lifetime, id, vfx));
+                return true;
+            }
+            return false;
         }
 
-        public void ReturnVFX(GameObject obj)
+        IEnumerator ReturnAfterTime(float lifetime, string id, GameObject asset)
         {
-            Destroy(obj);
+            yield return new WaitForSeconds(lifetime);
+            ReturnAsset(id, asset);
         }
     }
 }

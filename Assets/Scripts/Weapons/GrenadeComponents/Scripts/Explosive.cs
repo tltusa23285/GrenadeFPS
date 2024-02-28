@@ -22,13 +22,15 @@ namespace Game.Weapons.Grenades
         }
         protected override void OnVisualDetonate()
         {
-            //InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVFX("ExplosiveVFX", this.transform.position, this.transform.rotation, out GameObject go);
-            //if (go.TryGetComponent(out VisualEffect vfx))
-            //{
-            //    vfx.SetFloat("Size", Radius);
-            //    vfx.SetFloat("LifeTime", 1);
-            //    vfx.Play();
-            //}
+            if (InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVfx("ExplosiveVFX", this.transform.position, this.transform.rotation, .25f, out GameObject go))
+            {
+                if (go.TryGetComponent(out VisualEffect vfx))
+                {
+                    vfx.SetFloat("Size", Radius);
+                    vfx.SetFloat("Lifetime", .25f);
+                    vfx.Play();
+                }
+            }
         }
 
         protected override void OnFunctionalDetonate()
