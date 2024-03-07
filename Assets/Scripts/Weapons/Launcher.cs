@@ -7,13 +7,10 @@ using Game.Weapons.Grenades;
 
 namespace Game.Weapons
 {
-    public class Launcher : NetworkBehaviour
+    public class Launcher : MonoBehaviour
     {
-        private const float MAX_PASSED_TIME = 0.3f; // in seconds
-
         public Transform Firepoint;
         public float LaunchForce = 10;
-        public GameObject GrenadePrefab;
 
         [SerializeField, Tooltip("Measured in Shots per Second")]
         protected float _fireRate;
@@ -37,7 +34,6 @@ namespace Game.Weapons
         private void Awake()
         {
             Assert.IsNotNull(Firepoint);
-            Assert.IsNotNull(GrenadePrefab);
             GrenadeSpawner = FishNet.InstanceFinder.GetInstance<GrenadeSpawner>();
             OnAwake();
         }
@@ -66,28 +62,7 @@ namespace Game.Weapons
             if (ShotTimer < ShotCooldown) return;
             ShotTimer = 0;
 
-            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(UsedComponents, Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce);
-            FireServer(UsedComponents, Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce, base.TimeManager.Tick);
-        }
-
-        [ServerRpc]
-        private void FireServer(GrenadeComponentList compList, Vector3 position, Quaternion rotation, Actor owner, float launchForce, uint tick)
-        {
-            float passed_time = (float)base.TimeManager.TimePassed(tick, false);
-            passed_time = Mathf.Min(MAX_PASSED_TIME / 2f, passed_time);
-
-            GrenadeSpawner.SpawnGrenadeLocal(compList, position, rotation, owner, launchForce, passed_time);
-
-            FireObserver(compList, position, rotation, owner, launchForce, tick);
-        }
-
-        [ObserversRpc(ExcludeOwner = true)]
-        private void FireObserver(GrenadeComponentList compList, Vector3 position, Quaternion rotation, Actor owner, float launchForce, uint tick)
-        {
-            float passed_time = (float)base.TimeManager.TimePassed(tick, false);
-            passed_time = Mathf.Min(MAX_PASSED_TIME / 2f, passed_time);
-
-            if(!IsHostInitialized) GrenadeSpawner.SpawnGrenadeLocal(compList, position, rotation, owner, launchForce, passed_time);
+            GrenadeSpawner.SpawnGrenade(UsedComponents, Firepoint.position, Firepoint.rotation, ActorOwner, LaunchForce);
         }
     }
 }

@@ -2,16 +2,17 @@ using Game.Actors;
 using System.Collections.Generic;
 using UnityEngine;
 using Game.Interfaces;
+using FishNet.Object;
+using FishNet.Component.Prediction;
+using FishNet.Component.Ownership;
 
 namespace Game.Weapons.Grenades
 {
-    public class Grenade : MonoBehaviour, IForceable
+    public class Grenade : PredictedSpawn, IForceable
     {
-        public Actor Owner { get; private set; }
+        public Actor ActorOwner { get; private set; }
 
-        public int Damage = 50;
-        public float Radius = 5;
-        public float PushForce = 20f;
+        [Header("Grenades")]
 
         public float LifeSpan = 10f;
         private float LifeTimer = 0;
@@ -78,7 +79,7 @@ namespace Game.Weapons.Grenades
 
         public void Launch(Actor owner, float LaunchForce, float passedTime)
         {
-            Owner = owner;
+            ActorOwner = owner;
             this.LaunchForce = LaunchForce;
             CatchupTime = passedTime;
 

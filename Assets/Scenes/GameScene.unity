@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4607.352, g: 3252.7065, b: 3220.9126, a: 1}
+  m_IndirectSpecularColor: {r: 4604.5835, g: 3250.742, b: 3219.231, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1598,6 +1598,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d081a5e0939da4e9c27e9cd2a526a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 624359491}
+  _networkObjectCache: {fileID: 624359491}
   Components:
     AvailableComponents:
     - DisplayName: Explosive Payload
@@ -1618,7 +1621,7 @@ MonoBehaviour:
     - DisplayName: Lobbed
       Identifier: Lob
       Description: 
-  GrenadePrefab: {fileID: 3864434997201965219, guid: 90e50f53bb5913a40b0aaaaaf0cb435b,
+  GrenadePrefab: {fileID: 3408873268604172648, guid: 90e50f53bb5913a40b0aaaaaf0cb435b,
     type: 3}
 --- !u!4 &624359490
 Transform:
@@ -1650,7 +1653,8 @@ MonoBehaviour:
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
-  _networkBehaviours: []
+  _networkBehaviours:
+  - {fileID: 624359489}
   <SerializedRootNetworkBehaviour>k__BackingField: {fileID: 0}
   <NestedRootNetworkBehaviours>k__BackingField: []
   SerializedTransformProperties:
@@ -14036,7 +14040,7 @@ MonoBehaviour:
   _dropExcessiveReplicates: 1
   _maximumServerReplicates: 15
   _redundancyCount: 2
-  _allowPredictedSpawning: 0
+  _allowPredictedSpawning: 1
   _reservedObjectIds: 15
 --- !u!1 &8122645400577789581
 GameObject:

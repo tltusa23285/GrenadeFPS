@@ -12,7 +12,7 @@ namespace Game.Weapons.Grenades
     /// <summary>
     /// Networked singleton responsible for creation and destruction of grenade objects
     /// </summary>
-    public class GrenadeSpawner : MonoBehaviour
+    public class GrenadeSpawner : NetworkBehaviour
     {
 
         private Dictionary<string, GameObject> ComponentSources = new Dictionary<string, GameObject>();
@@ -96,35 +96,38 @@ namespace Game.Weapons.Grenades
             comp.transform.parent = this.transform;
         }
 
-        private void GetGrenade(out Grenade gre)
-        {
-            if (!GrenadePool.TryDequeue(out gre))
-            {
-                GameObject go = Instantiate(GrenadePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
-                gre = go.GetComponent<Grenade>();
-            }
-            gre.gameObject.SetActive(true);
-            gre.transform.parent = null;
-        }
+        //private void GetGrenade(out Grenade gre)
+        //{
+        //    if (!GrenadePool.TryDequeue(out gre))
+        //    {
+        //        GameObject go = Instantiate(GrenadePrefab, new Vector3(0, 10000, 0), Quaternion.identity);
+        //        gre = go.GetComponent<Grenade>();
+        //    }
+        //    gre.gameObject.SetActive(true);
+        //    gre.transform.parent = null;
+        //}
 
-        private void ReturnGrenade(Grenade gre)
-        {
-            foreach (var item in gre.Components)
-            {
-                ReturnComponent(item);
-            }
-            gre.FlushComponents();
-            GrenadePool.Enqueue(gre);
-            gre.gameObject.SetActive(false);
-            gre.transform.parent = this.transform;
-        }
+        //private void ReturnGrenade(Grenade gre)
+        //{
+        //    foreach (var item in gre.Components)
+        //    {
+        //        ReturnComponent(item);
+        //    }
+        //    gre.FlushComponents();
+        //    GrenadePool.Enqueue(gre);
+        //    gre.gameObject.SetActive(false);
+        //    gre.transform.parent = this.transform;
+        //}
 
-        public void SpawnGrenadeLocal(in GrenadeComponentList compList, in Vector3 position, in Quaternion rotation, in Actor owner, in float launchForce, in float passedTime = 0f)
+        [ServerRpc(RequireOwnership = false)]
+        public void SpawnGrenade(GrenadeComponentList compList, Vector3 position, Quaternion rotation, Actor owner, float launchForce, float passedTime = 0f)
         {
-            GetGrenade(out Grenade g);
+            GameObject go = Instantiate(GrenadePrefab, position, rotation);
+            Grenade g = go.GetComponent<Grenade>();
 
-            g.transform.position = position;
-            g.transform.rotation = rotation;
+            //g.transform.position = position;
+            //g.transform.rotation = rotation;
+
 
             foreach (var item in compList.Components)
             {
@@ -136,6 +139,8 @@ namespace Game.Weapons.Grenades
                 g.AddComponent(comp);
             }
 
+            InstanceFinder.ServerManager.Spawn(go, owner.Owner);
+
             g.Launch(owner, launchForce, passedTime);
 
             //return g;
@@ -143,7 +148,7 @@ namespace Game.Weapons.Grenades
 
         public void DespawnGrenade(Grenade g)
         {
-            ReturnGrenade(g);
+            g.Despawn();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Game.Weapons.Grenades
                 {
                     Physics.IgnoreCollision(item, coll, true);
                 }
-                foreach (var item in root.Owner.GetComponentsInChildren<Collider>())
+                foreach (var item in root.ActorOwner.GetComponentsInChildren<Collider>())
                 {
                     Physics.IgnoreCollision(item, coll, true);
                 }
