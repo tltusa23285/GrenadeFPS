@@ -4,6 +4,8 @@ namespace Game.Weapons.Grenades
 {
     public abstract class GrenadeComponent : MonoBehaviour
     {
+        public bool IsServerOnly = false;
+
         protected Grenade Root;
 
         [HideInInspector] public string PoolID;
@@ -58,37 +60,5 @@ namespace Game.Weapons.Grenades
         /// Invoked when setdown/despawned, this should halt any looping behaviour, and clean up any lingering objcts needed for function
         /// </summary>
         protected virtual void OnSetDown() { }
-
-        /// <summary>
-        /// Update method controlled/called by roots Update
-        /// Guarenteed to run only when the root grenade is allowed to run its Update
-        /// </summary>
-        /// <param name="time"></param>
-        public virtual void OnFrameUpdate(in float time) { }
-
-        /// <summary>
-        /// Update method controlled/called by roots FixedUpdate
-        /// Guarenteed to run only when the root grenade is allowed to run its FixedUpdate
-        /// </summary>
-        /// <param name="time"></param>
-        public virtual void OnPhysicsUpdate(in float time) { }
-
-        public void Detonate()
-        {
-            if (FishNet.InstanceFinder.IsClientStarted) OnVisualDetonate();
-            if (FishNet.InstanceFinder.IsServerStarted) OnFunctionalDetonate();
-        }
-
-        /// <summary>
-        /// Executes any visual behaviour when root is detonated
-        /// </summary>
-        protected virtual void OnVisualDetonate() { }
-        /// <summary>
-        /// Executes any functional behaviour when root is detonated
-        /// </summary>
-        protected virtual void OnFunctionalDetonate() { }
-
-        public virtual void ModifyDirectForce(ref Vector3 force, in ForceMode mode) { }
-        public virtual void ModifyExplosionForce(ref float force, in Vector3 origin, in float radius, ForceMode mode) { }
     }
 }

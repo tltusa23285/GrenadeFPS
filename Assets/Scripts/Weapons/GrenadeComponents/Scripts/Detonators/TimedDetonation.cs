@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace Game.Weapons.Grenades
 {
-    public class TimedDetonation : GrenadeComponent
+    public class TimedDetonation : GrenadeComponent, IGCompOnLaunch
     {
         [SerializeField] private float Time;
-        protected override void OnSetup()
+
+        private void DetonateAfterTime()
         {
-            StartCoroutine(DetonateAfterTime());
+            Root.Detonate();
         }
 
-        IEnumerator DetonateAfterTime()
+        void IGCompOnLaunch.OnLaunch()
         {
-            yield return new WaitForSeconds(Time);
-            Root.Detonate();
+            Invoke(nameof(DetonateAfterTime), Time);
         }
     }
 }

@@ -5,6 +5,7 @@ using Game.Interfaces;
 using FishNet.Object;
 using FishNet.Component.Prediction;
 using FishNet.Component.Ownership;
+using Game.DataStructures.Grenades;
 
 namespace Game.Weapons.Grenades
 {
@@ -23,9 +24,16 @@ namespace Game.Weapons.Grenades
         public Transform Trans { get; private set; }
         public SphereCollider Collider { get; private set; }
 
-        public List<GrenadeComponent> Components = new List<GrenadeComponent>();
+        private List<GrenadeComponent> Components = new List<GrenadeComponent>();
 
         private GrenadeSpawner GrenadeSpawner;
+
+        private List<IGCompOnDetonate> DetonateComponents = new List<IGCompOnDetonate>();
+        private List<IGCompOnLaunch> LaunchComponents = new List<IGCompOnLaunch>();
+        private List<IGCompForceModifier> ForceModiferComponents = new List<IGCompForceModifier>();
+        private List<IGCompOnUpdate> FrameUpdateComponents = new List<IGCompOnUpdate>();
+        private List<IGCompOnUpdate> PhysicsUpdateComponents = new List<IGCompOnUpdate>();
+
 
         private void Awake()
         {
@@ -39,6 +47,23 @@ namespace Game.Weapons.Grenades
         public void AddComponent(GrenadeComponent component)
         {
             Components.Add(component);
+
+            if (component is IGCompOnDetonate) DetonateComponents.Add((IGCompOnDetonate)component);
+            if (component is IGCompOnLaunch) LaunchComponents.Add((IGCompOnLaunch)component);
+            if (component is IGCompForceModifier) ForceModiferComponents.Add((IGCompForceModifier)component);
+            if (component is IGCompOnUpdate)
+            {
+                IGCompOnUpdate comp = (IGCompOnUpdate)component;
+                switch (comp.Category)
+                {
+                    case IGCompOnUpdate.UpdateCategory.Frame: FrameUpdateComponents.Add(comp); break;
+                    case IGCompOnUpdate.UpdateCategory.Physics: PhysicsUpdateComponents.Add(comp); break;
+                    default:
+                        break;
+                }
+            }
+
+            component.Setup(this);
         }
 
         public void FlushComponents()
@@ -65,9 +90,9 @@ namespace Game.Weapons.Grenades
 
         public void Detonate()
         {
-            foreach (var item in Components)
+            foreach (var item in DetonateComponents)
             {
-                item.Detonate();
+                item.OnDetonate();
             }
             OnDetonate();
         }
@@ -77,21 +102,36 @@ namespace Game.Weapons.Grenades
             GrenadeSpawner.DespawnGrenade(this);
         }
 
-        public void Launch(Actor owner, float LaunchForce, float passedTime)
+        private void Launch()
         {
-            ActorOwner = owner;
-            this.LaunchForce = LaunchForce;
-            CatchupTime = passedTime;
-
-            foreach (var item in Components)
+            foreach (var item in LaunchComponents)
             {
-                item.Setup(this);
+                item.OnLaunch();
             }
         }
 
+        [ObserversRpc]
+        public void ConstructAndLaunch(GrenadeComponentList compList, Actor owner, float launchForce, float passedTime = 0)
+        {
+            ActorOwner = owner;
+            this.LaunchForce = launchForce;
+            CatchupTime = passedTime;
+            foreach (var item in compList.Components)
+            {
+                if (!GrenadeSpawner.GetComponent(item, out GrenadeComponent comp))
+                {
+                    Debug.LogError($"Failed to load component {item}");
+                    continue;
+                }
+                this.AddComponent(comp);
+            }
+            this.Launch();
+        }
 
         private void Update()
         {
+            if (!this.IsServerInitialized) return;
+
             float delta = Time.deltaTime;
             float catchup_delta = 0;
             if (CatchupTime > 0f)
@@ -106,14 +146,16 @@ namespace Game.Weapons.Grenades
                 catchup_delta = step;
             }
 
-            foreach (var item in Components)
+            foreach (var item in FrameUpdateComponents)
             {
-                item.OnFrameUpdate(Time.deltaTime + catchup_delta);
+                item.OnUpdate(Time.deltaTime + catchup_delta);
             }
         }
 
         private void FixedUpdate()
         {
+            if (!this.IsServerInitialized) return; 
+
             float delta = Time.fixedDeltaTime;
             float catchup_delta = 0;
             if (CatchupTime > 0f)
@@ -126,9 +168,9 @@ namespace Game.Weapons.Grenades
                 catchup_delta = step;
             }
 
-            foreach (var item in Components)
+            foreach (var item in PhysicsUpdateComponents)
             {
-                item.OnPhysicsUpdate(Time.fixedDeltaTime + catchup_delta);
+                item.OnUpdate(Time.fixedDeltaTime + catchup_delta);
             }
 
             LifeTimer += Time.fixedDeltaTime;
@@ -140,13 +182,13 @@ namespace Game.Weapons.Grenades
 
         public void AddForce(Vector3 force, ForceMode mode)
         {
-            foreach (var item in Components) { item.ModifyDirectForce(ref force, mode); }
+            foreach (var item in ForceModiferComponents) { item.ModifyDirectForce(ref force, mode); }
             RB.AddForce(force, mode);
         }
 
         public void AddExplosionForce(float force, Vector3 origin, float radius, ForceMode mode)
         {
-            foreach (var item in Components) { item.ModifyExplosionForce(ref force, origin, radius, mode); }
+            foreach (var item in ForceModiferComponents) { item.ModifyExplosionForce(ref force, origin, radius, mode); }
             RB.AddExplosionForce(force, origin, radius, 0, mode);
         }
     }

@@ -1621,6 +1621,12 @@ MonoBehaviour:
     - DisplayName: Lobbed
       Identifier: Lob
       Description: 
+    - DisplayName: ImplosiveVfx
+      Identifier: ImplosiveVfxComp
+      Description: 
+    - DisplayName: ExplosiveVfx
+      Identifier: ExplosiveVfxComp
+      Description: 
   GrenadePrefab: {fileID: 3408873268604172648, guid: 90e50f53bb5913a40b0aaaaaf0cb435b,
     type: 3}
 --- !u!4 &624359490

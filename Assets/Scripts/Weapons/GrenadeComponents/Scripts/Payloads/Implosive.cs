@@ -9,24 +9,13 @@ using Game.VfxScripts;
 
 namespace Game.Weapons.Grenades
 {
-    public class Implosive : GrenadeComponent
+    public class Implosive : GrenadeComponent, IGCompOnDetonate
     {
         [SerializeField] private int Damage = 50;
         [SerializeField] private float PullForce = 20;
         [SerializeField] private float Radius = 10;
-        protected override void OnVisualDetonate()
-        {
-            if (InstanceFinder.GetInstance<GrenadeVFXSpawner>().SpawnVfx("ImplosiveVFX", this.transform.position, this.transform.rotation, 0.25f, out VfxObject go))
-            {
-                if (go.TryGetComponent(out VisualEffect vfx))
-                {
-                    vfx.SetFloat("Radius", Radius);
-                }
-                go.Play();
-            }
-        }
 
-        protected override void OnFunctionalDetonate()
+        void IGCompOnDetonate.OnDetonate()
         {
             foreach (var item in Physics.OverlapSphere(Root.transform.position, Radius))
             {

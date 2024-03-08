@@ -52,7 +52,7 @@ namespace Game.Weapons.Grenades
             }
         }
         
-        private bool GetComponent(in string id, out GrenadeComponent comp)
+        public bool GetComponent(in string id, out GrenadeComponent comp)
         {
             comp = null;
             if (!ComponentSources.ContainsKey(id))
@@ -128,20 +128,19 @@ namespace Game.Weapons.Grenades
             //g.transform.position = position;
             //g.transform.rotation = rotation;
 
-
-            foreach (var item in compList.Components)
-            {
-                if (!GetComponent(item, out GrenadeComponent comp))
-                {
-                    Debug.LogError($"Failed to load component {item}");
-                    continue;
-                }
-                g.AddComponent(comp);
-            }
+            //foreach (var item in compList.Components)
+            //{
+            //    if (!GetComponent(item, out GrenadeComponent comp))
+            //    {
+            //        Debug.LogError($"Failed to load component {item}");
+            //        continue;
+            //    }
+            //    g.AddComponent(comp);
+            //}
 
             InstanceFinder.ServerManager.Spawn(go, owner.Owner);
 
-            g.Launch(owner, launchForce, passedTime);
+            g.ConstructAndLaunch(compList, owner, launchForce, passedTime);
 
             //return g;
         }
