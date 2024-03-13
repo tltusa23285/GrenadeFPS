@@ -143,6 +143,7 @@ namespace Game.Actors.Components
         }
         #region Networked Movement
 
+        #region Replicate Input
         protected override void ConstructInputData(out InputData input)
         {
             input = new InputData(InputDirection, CombinedInputRotation, JumpQueued);
@@ -158,6 +159,7 @@ namespace Game.Actors.Components
             if (!base.IsOwner)
             {
                 OnFrameUpdate((float)TimeManager.TickDelta);
+                InputRotation = Vector3.zero;
             }
 
             OnPhysicsUpdate((float)TimeManager.TickDelta);
@@ -167,7 +169,8 @@ namespace Game.Actors.Components
                 RigidBody.AddForce(Vector3.up * JumpStrength, ForceMode.VelocityChange);
             }
         }
-
+        #endregion
+        #region Reconcile State
         protected override void GetStateData(out StateData state)
         {
             state = new StateData()
@@ -188,6 +191,7 @@ namespace Game.Actors.Components
                 HeadTrans.localRotation = Quaternion.Euler(state.Rotation.x, 0, 0);
             }
         }
+        #endregion
 
         #endregion
     }

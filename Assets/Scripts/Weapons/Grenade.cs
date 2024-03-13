@@ -87,6 +87,7 @@ namespace Game.Weapons.Grenades
             RB.interpolation = RigidbodyInterpolation.None;
         }
 
+        [ObserversRpc]
         public void Detonate()
         {
             foreach (var item in DetonateComponents)

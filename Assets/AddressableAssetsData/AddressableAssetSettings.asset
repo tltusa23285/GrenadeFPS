@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: b0b782b6a939c2b4e93b62a6150e93e6
   m_currentHash:
     serializedVersion: 2
-    Hash: 3ca6a19aabcacc738fde06947e82d9ff
+    Hash: e3dde9ad50fd87bce6690791032057e2
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -88,7 +88,11 @@ MonoBehaviour:
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
-    m_LabelNames: []
+    m_LabelNames:
+    - G_Payload
+    - G_Kinetic
+    - G_Detonator
+    - VFX
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 3521359d2c3fef045b3531436c716a1e, type: 2}

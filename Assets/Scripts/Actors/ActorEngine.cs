@@ -93,17 +93,18 @@ namespace Game.Actors.Components
             CombinedInputRotation += InputRotation;
         }
 
-        protected virtual void ApplyRotation(float deltaTime)
+        protected virtual void SetRotation(in Vector3 rotation)
         {
-            CurrentRotation += InputRotation;
+            CurrentRotation = rotation;
             CurrentRotation.x = Mathf.Clamp(CurrentRotation.x, -VertLookClamp, VertLookClamp);
-            BodyTrans.localRotation = Quaternion.Euler(0, CurrentRotation.y, 0);
-            HeadTrans.localRotation = Quaternion.Euler(CurrentRotation.x, 0, 0);
+            BodyTrans.localRotation = Quaternion.Euler(0, rotation.y, 0);
+            HeadTrans.localRotation = Quaternion.Euler(rotation.x, 0, 0);
+
         }
 
         public virtual void OnFrameUpdate(in float deltaTime) 
         {
-            ApplyRotation(deltaTime);
+            SetRotation(CurrentRotation + InputRotation);
         }
 
         public virtual void OnPhysicsUpdate(in float deltaTime) { }
@@ -139,15 +140,27 @@ namespace Game.Actors.Components
             {
                 base.TimeManager.OnTick += TimeManager_OnTick;
                 base.TimeManager.OnPostTick += TimeManager_OnPostTick;
+                if (!base.IsOwner)
+                {
+                    base.PredictionManager.OnPreReconcile += PredictionManager_PreReconcile;
+                    base.PredictionManager.OnPostReconcile += PredictionManager_PostReconcile;
+                }
             }
             else
             {
                 base.TimeManager.OnTick -= TimeManager_OnTick;
                 base.TimeManager.OnPostTick -= TimeManager_OnPostTick;
+                if (!base.IsOwner)
+                {
+                    base.PredictionManager.OnPreReconcile -= PredictionManager_PreReconcile;
+                    base.PredictionManager.OnPostReconcile -= PredictionManager_PostReconcile;
+                }   
             }
         }
 
         // TODO : ideally this would be handled more abstracly, however Fish-Net currently does not support generics or protected methods for reconcile/replicate
+
+        #region Replicate Input
 
         // occurs before fixed update
         private void TimeManager_OnTick()
@@ -155,22 +168,6 @@ namespace Game.Actors.Components
             GetInputData(out InputData input);
             ReplicateInput(input);
         }
-        // occurs after fixed update
-        private void TimeManager_OnPostTick()
-        {
-            if (base.IsServerInitialized)
-            {
-                GetStateData(out StateData state);
-                ReconcileState(state);
-            }
-        }
-
-        [Reconcile]
-        private void ReconcileState(StateData state, Channel channel = Channel.Unreliable)
-        {
-            ApplyStateData(state);
-        }
-
         [Replicate]
         private void ReplicateInput(InputData input, ReplicateState state = ReplicateState.Invalid, Channel channel = Channel.Unreliable)
         {
@@ -202,6 +199,24 @@ namespace Game.Actors.Components
             }
             OnPhysicsUpdate((float)TimeManager.TickDelta);
         }
+        #endregion
+
+        #region Reconcile State
+        // occurs after fixed update
+        private void TimeManager_OnPostTick()
+        {
+            if (base.IsServerInitialized)
+            {
+                GetStateData(out StateData state);
+                ReconcileState(state);
+            }
+        }
+
+        [Reconcile]
+        private void ReconcileState(StateData state, Channel channel = Channel.Unreliable)
+        {
+            ApplyStateData(state);
+        }
 
         protected virtual void GetStateData(out StateData state)
         {
@@ -217,6 +232,19 @@ namespace Game.Actors.Components
             BodyTrans.rotation = Quaternion.Euler(0, state.Rotation.y, 0);
             HeadTrans.rotation = Quaternion.Euler(state.Rotation.x, 0, 0);
         }
+
+        Vector3 SavedRot;
+
+        protected virtual void PredictionManager_PreReconcile(uint clientTick, uint serverTick)
+        {
+            SavedRot = CurrentRotation;
+        }
+
+        protected virtual void PredictionManager_PostReconcile(uint clientTick, uint serverTick)
+        {
+            SetRotation(SavedRot);
+        }
+        #endregion
 
         #endregion
 

@@ -20,42 +20,50 @@ MonoBehaviour:
   - m_GUID: 12cefd3458252dd46b5d1d9b92287125
     m_Address: Explosive
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - G_Payload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1896be743f5f25b44aceeb68e36609cc
     m_Address: StraightFlight
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - G_Kinetic
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f42d2ac8828c6094fa7b0a6692f4897b
     m_Address: ContactDetonate
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - G_Detonator
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3aff2dcc469eb3a4c8575899b826ed38
     m_Address: Lob
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - G_Kinetic
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 90fa2f58c6de23142938de6c3a622893
     m_Address: Implosive
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - G_Payload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a6953ad2c8a649448b2c3077fec9e8c5
     m_Address: TimedDetonate
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - G_Detonator
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 359b92bd7a33ab94f9bec8628f79c7d6
     m_Address: ImplosiveVfxComp
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - VFX
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb989c7c6a0720140a5e8af0c74d1aff
     m_Address: ExplosiveVfxComp
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - VFX
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: abbf3983b19333947b5fe163cc2d5052, type: 2}

@@ -68,7 +68,7 @@ namespace Game
                 property.stringValue = Options[current];
             }
 
-            if (GUI.Button(position, Options[current]))
+            if (GUI.Button(position, Options[current], Button))
             {
                 SetOptions();
                 PopupSelectionWindow.ShowWindow(GUIUtility.GUIToScreenRect(position), Options, SelectOption);
