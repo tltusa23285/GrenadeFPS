@@ -11,6 +11,7 @@ namespace Game
         private bool IsInit = false;
         private string[] Options;
         private HashSet<string> GroupFilter;
+        private GUIStyle Button;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -46,6 +47,11 @@ namespace Game
 
         void DrawGui(Rect position, SerializedProperty property, GUIContent label)
         {
+            Button = new GUIStyle("Button")
+            {
+                alignment = TextAnchor.MiddleLeft
+            };
+
             int current = 0;
             for (int i = 0; i < Options.Length; i++)
             {
@@ -56,8 +62,17 @@ namespace Game
                 }
             }
 
-            current = EditorGUILayout.Popup(current, Options);
-            property.stringValue = Options[current];
+            void SelectOption(int index)
+            {
+                current = index;
+                property.stringValue = Options[current];
+            }
+
+            if (GUI.Button(position, Options[current]))
+            {
+                SetOptions();
+                PopupSelectionWindow.ShowWindow(GUIUtility.GUIToScreenRect(position), Options, SelectOption);
+            }
         }
     }
 }
