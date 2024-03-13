@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Game.Interfaces;
-using FishNet.Object;
-using FishNet;
-using UnityEngine.VFX;
-using Game.VfxScripts;
 
 namespace Game.Weapons.Grenades
 {

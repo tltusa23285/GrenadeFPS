@@ -1,11 +1,6 @@
 ﻿#if UNITY_EDITOR
 #if PREDICTION_V2
-using FishNet.Editing;
-using FishNet.Object;
-using FishNet.Object.Prediction;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FishNet.Object.Editing

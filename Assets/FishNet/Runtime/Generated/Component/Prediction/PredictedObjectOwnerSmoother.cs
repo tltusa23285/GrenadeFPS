@@ -1,9 +1,4 @@
-﻿using FishNet.Utility.Extension;
-using FishNet.Object;
-using System.Runtime.CompilerServices;
-using UnityEngine;
-
-namespace FishNet.Component.Prediction
+﻿namespace FishNet.Component.Prediction
 {
     internal class PredictedObjectOwnerSmoother
     {

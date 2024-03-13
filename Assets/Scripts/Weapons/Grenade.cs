@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Interfaces;
 using FishNet.Object;
-using FishNet.Component.Prediction;
 using FishNet.Component.Ownership;
 using Game.DataStructures.Grenades;
 

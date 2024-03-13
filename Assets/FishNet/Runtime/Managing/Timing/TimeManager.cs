@@ -1,12 +1,6 @@
 ﻿using FishNet.Connection;
-using FishNet.Documenting;
-using FishNet.Managing.Transporting;
-using FishNet.Object;
 using FishNet.Serializing;
-using FishNet.Serializing.Helping;
 using FishNet.Transporting;
-using FishNet.Utility;
-using FishNet.Utility.Extension;
 using GameKit.Dependencies.Utilities;
 using System;
 using System.Runtime.CompilerServices;

@@ -4,10 +4,6 @@ using Game.Weapons;
 using UnityEngine;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
-using Game.Managers;
-using Game.DataStructures.Network;
-using FishNet.Object.Prediction;
-using FishNet.Transporting;
 
 namespace Game.Actors
 {

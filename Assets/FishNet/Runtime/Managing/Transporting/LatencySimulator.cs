@@ -1,5 +1,4 @@
-﻿using FishNet.Connection;
-using FishNet.Transporting;
+﻿using FishNet.Transporting;
 using FishNet.Utility.Performance;
 using System;
 using System.Collections.Generic;

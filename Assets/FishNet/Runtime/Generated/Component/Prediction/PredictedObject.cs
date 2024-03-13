@@ -1,9 +1,4 @@
-﻿using FishNet.Component.Transforming;
-using FishNet.Utility.Extension;
-using FishNet.Connection;
-using FishNet.Managing;
-using FishNet.Object;
-using System;
+﻿using FishNet.Object;
 using UnityEngine;
 
 namespace FishNet.Component.Prediction

@@ -1,7 +1,6 @@
 ﻿using FishNet.CodeGenerating.Extension;
 using FishNet.CodeGenerating.Helping;
 using FishNet.CodeGenerating.Helping.Extension;
-using FishNet.Object.Delegating;
 using FishNet.Object.Synchronizing;
 using FishNet.Object.Synchronizing.Internal;
 using GameKit.Dependencies.Utilities;
@@ -9,7 +8,6 @@ using MonoFN.Cecil;
 using MonoFN.Cecil.Cil;
 using MonoFN.Collections.Generic;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FishNet.CodeGenerating.Processing
 {

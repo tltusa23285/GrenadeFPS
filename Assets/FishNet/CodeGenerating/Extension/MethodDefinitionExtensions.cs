@@ -2,8 +2,6 @@
 using FishNet.CodeGenerating.Helping.Extension;
 using MonoFN.Cecil;
 using MonoFN.Cecil.Cil;
-using MonoFN.Cecil.Rocks;
-using MonoFN.Collections.Generic;
 using System.Collections.Generic;
 
 namespace FishNet.CodeGenerating.Extension

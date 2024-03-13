@@ -2,13 +2,11 @@
 using FishNet.CodeGenerating.Helping;
 using FishNet.CodeGenerating.Helping.Extension;
 using FishNet.CodeGenerating.Processing.Rpc;
-using FishNet.Configuring;
 using FishNet.Object;
 using MonoFN.Cecil;
 using MonoFN.Cecil.Cil;
 using MonoFN.Collections.Generic;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FishNet.CodeGenerating.Processing
 {

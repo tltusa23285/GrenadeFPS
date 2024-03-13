@@ -1,20 +1,13 @@
-﻿using FishNet.CodeGenerating;
-using FishNet.Connection;
-using FishNet.Documenting;
+﻿using FishNet.Connection;
 using FishNet.Managing.Timing;
 using FishNet.Managing.Transporting;
 using FishNet.Object;
 using FishNet.Serializing;
-using FishNet.Serializing.Helping;
 using FishNet.Transporting;
 using FishNet.Utility.Performance;
-using GameKit.Dependencies.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
-using static FishNet.Managing.Predicting.PredictionManager;
-using UnityScene = UnityEngine.SceneManagement.Scene;
 
 
 namespace FishNet.Managing.Predicting

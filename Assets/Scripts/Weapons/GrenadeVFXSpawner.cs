@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using FishNet;
-using Game.Interfaces;
 using Game.VfxScripts;
 
 namespace Game.Weapons.Grenades

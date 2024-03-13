@@ -1,5 +1,4 @@
-﻿using FishNet.Component.Prediction;
-using FishNet.Serializing;
+﻿using FishNet.Serializing;
 using UnityEngine;
 
 namespace FishNet.Component.Prediction

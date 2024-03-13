@@ -1,7 +1,5 @@
 ﻿#if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
-using static FishNet.Component.Prediction.PredictedObject;
 
 namespace FishNet.Component.Prediction
 {

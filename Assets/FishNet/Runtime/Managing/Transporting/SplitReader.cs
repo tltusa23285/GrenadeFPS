@@ -1,6 +1,5 @@
 ﻿using FishNet.Serializing;
 using System;
-using UnityEngine;
 
 namespace FishNet.Managing.Transporting
 {

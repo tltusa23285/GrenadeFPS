@@ -2,11 +2,9 @@
 using FishNet.Connection;
 using FishNet.Documenting;
 using FishNet.Managing;
-using FishNet.Managing.Logging;
 using FishNet.Managing.Transporting;
 using FishNet.Object.Delegating;
 using FishNet.Serializing;
-using FishNet.Serializing.Helping;
 using FishNet.Transporting;
 using GameKit.Dependencies.Utilities;
 using System.Collections.Generic;

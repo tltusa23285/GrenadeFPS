@@ -1,12 +1,10 @@
-﻿using FishNet.Component.Observing;
-using FishNet.Connection;
+﻿using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Observing;
 using FishNet.Utility;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [assembly: InternalsVisibleTo(UtilityConstants.DEMOS_ASSEMBLY_NAME)]
 [assembly: InternalsVisibleTo(UtilityConstants.TEST_ASSEMBLY_NAME)]

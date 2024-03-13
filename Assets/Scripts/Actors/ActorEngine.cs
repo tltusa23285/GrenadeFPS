@@ -1,12 +1,9 @@
-using FishNet.Component.Prediction;
 using FishNet.Object;
 using FishNet.Object.Prediction;
 using FishNet.Transporting;
-using Game.Actors.Data;
 using Game.DataStructures.Network;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.InputSystem;
 using Game.Interfaces;
 
 namespace Game.Actors.Components

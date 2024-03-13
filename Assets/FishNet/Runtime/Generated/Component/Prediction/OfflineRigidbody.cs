@@ -130,7 +130,6 @@ namespace FishNet.Component.Prediction
 #else
 
 using FishNet.Managing.Predicting;
-using FishNet.Object;
 using UnityEngine;
 
 namespace FishNet.Component.Prediction

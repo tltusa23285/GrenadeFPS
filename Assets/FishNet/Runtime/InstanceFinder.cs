@@ -7,7 +7,6 @@ using FishNet.Managing.Server;
 using FishNet.Managing.Statistic;
 using FishNet.Managing.Timing;
 using FishNet.Managing.Transporting;
-using FishNet.Utility;
 using GameKit.Dependencies.Utilities;
 using System;
 using System.Linq;

@@ -1,6 +1,5 @@
 ﻿using FishNet.Object;
 using GameKit.Dependencies.Utilities;
-using System;
 using System.Collections.Generic;
 
 namespace FishNet.Connection

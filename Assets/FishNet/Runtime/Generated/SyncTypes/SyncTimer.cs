@@ -1,8 +1,6 @@
-﻿using FishNet.CodeGenerating;
-using FishNet.Documenting;
+﻿using FishNet.Documenting;
 using FishNet.Object.Synchronizing.Internal;
 using FishNet.Serializing;
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 

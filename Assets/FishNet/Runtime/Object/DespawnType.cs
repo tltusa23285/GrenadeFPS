@@ -1,6 +1,4 @@
-﻿using FishNet.Object.Helping;
-
-namespace FishNet.Object
+﻿namespace FishNet.Object
 {
 
     public enum DespawnType : byte

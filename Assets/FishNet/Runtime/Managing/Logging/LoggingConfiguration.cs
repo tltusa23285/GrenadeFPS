@@ -1,7 +1,4 @@
-﻿using FishNet.Documenting;
-using System;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FishNet.Managing.Logging
 {

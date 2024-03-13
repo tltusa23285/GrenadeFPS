@@ -9,13 +9,10 @@ using FishNet.Managing.Transporting;
 using FishNet.Object;
 using FishNet.Serializing;
 using FishNet.Transporting;
-using FishNet.Utility.Extension;
-using FishNet.Utility.Performance;
 using GameKit.Dependencies.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace FishNet.Managing.Server

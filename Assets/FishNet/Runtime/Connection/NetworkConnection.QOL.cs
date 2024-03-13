@@ -2,7 +2,6 @@
 using FishNet.Managing.Logging;
 using FishNet.Managing.Server;
 using FishNet.Serializing;
-using System;
 
 namespace FishNet.Connection
 {

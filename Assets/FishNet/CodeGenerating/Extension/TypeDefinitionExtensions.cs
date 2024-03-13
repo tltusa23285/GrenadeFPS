@@ -1,8 +1,5 @@
 ﻿using FishNet.CodeGenerating.Helping.Extension;
-using FishNet.Object.Prediction;
-using FishNet.Utility.Performance;
 using MonoFN.Cecil;
-using System.Collections.Generic;
 
 namespace FishNet.CodeGenerating.Extension
 {

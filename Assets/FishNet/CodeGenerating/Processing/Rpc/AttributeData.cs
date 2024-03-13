@@ -1,5 +1,4 @@
-﻿using FishNet.CodeGenerating.Helping;
-using FishNet.Object.Helping;
+﻿using FishNet.Object.Helping;
 using MonoFN.Cecil;
 using System.Collections.Generic;
 

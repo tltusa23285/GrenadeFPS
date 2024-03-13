@@ -1,12 +1,4 @@
-﻿using FishNet.Connection;
-using FishNet.Managing;
-using FishNet.Managing.Timing;
-using FishNet.Object;
-using FishNet.Transporting;
-using FishNet.Utility;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using FishNet.Object;
 
 namespace FishNet.Component.Prediction
 {

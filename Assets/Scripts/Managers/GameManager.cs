@@ -1,12 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
-using Game.Actors;
-using System.Linq;
 using FishNet;
-using Game.Weapons;
 
 namespace Game.Managers
 {

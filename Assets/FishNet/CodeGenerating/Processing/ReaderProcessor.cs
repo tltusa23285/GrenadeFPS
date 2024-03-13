@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System;
 using FishNet.CodeGenerating.ILCore;
 using FishNet.CodeGenerating.Extension;
-using FishNet.Utility.Performance;
 using FishNet.Object;
 
 namespace FishNet.CodeGenerating.Helping

@@ -3,12 +3,10 @@
 #endif
 using FishNet.Component.Observing;
 using FishNet.Connection;
-using FishNet.Managing.Logging;
 using FishNet.Managing.Utility;
 using FishNet.Object;
 using FishNet.Serializing;
 using FishNet.Transporting;
-using FishNet.Utility.Extension;
 using GameKit.Dependencies.Utilities;
 using System;
 using System.Collections.Generic;

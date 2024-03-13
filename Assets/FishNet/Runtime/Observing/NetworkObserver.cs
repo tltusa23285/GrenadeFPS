@@ -3,12 +3,10 @@ using FishNet.Documenting;
 using FishNet.Managing.Server;
 using FishNet.Object;
 using FishNet.Transporting;
-using FishNet.Utility.Performance;
 using GameKit.Dependencies.Utilities;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace FishNet.Observing
 {

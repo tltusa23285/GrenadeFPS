@@ -1,7 +1,6 @@
 using Game.Actors;
 using UnityEngine;
 using UnityEngine.Assertions;
-using FishNet.Object;
 using Game.DataStructures.Grenades;
 using Game.Weapons.Grenades;
 

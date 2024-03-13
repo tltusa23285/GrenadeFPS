@@ -1,7 +1,6 @@
 ﻿using FishNet.CodeGenerating.Extension;
 using FishNet.CodeGenerating.Helping;
 using FishNet.CodeGenerating.Helping.Extension;
-using FishNet.Configuring;
 using FishNet.Connection;
 using FishNet.Managing.Logging;
 using FishNet.Object.Helping;
@@ -12,7 +11,6 @@ using GameKit.Dependencies.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 using FishNet.Object;
 
 namespace FishNet.CodeGenerating.Processing.Rpc

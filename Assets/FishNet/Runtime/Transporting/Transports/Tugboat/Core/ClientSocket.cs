@@ -1,5 +1,4 @@
 using FishNet.Managing;
-using FishNet.Managing.Logging;
 using LiteNetLib;
 using LiteNetLib.Layers;
 using System;
@@ -7,7 +6,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace FishNet.Transporting.Tugboat.Client
 {

@@ -1,8 +1,6 @@
-﻿using FishNet.Object;
-using FishNet.Serializing;
+﻿using FishNet.Serializing;
 using MonoFN.Cecil;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace FishNet.CodeGenerating.Helping

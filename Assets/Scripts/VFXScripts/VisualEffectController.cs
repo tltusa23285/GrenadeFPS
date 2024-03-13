@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
-using Game.Interfaces;
 
 namespace Game.VfxScripts
 {

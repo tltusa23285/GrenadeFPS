@@ -3,14 +3,12 @@ using FishNet.CodeGenerating.Helping.Extension;
 using FishNet.CodeGenerating.ILCore;
 using FishNet.Object;
 using FishNet.Serializing;
-using FishNet.Utility.Performance;
 using MonoFN.Cecil;
 using MonoFN.Cecil.Cil;
 using MonoFN.Cecil.Rocks;
 using System;
 using System.Collections.Generic;
 using SR = System.Reflection;
-using UnityDebug = UnityEngine.Debug;
 
 namespace FishNet.CodeGenerating.Helping
 {

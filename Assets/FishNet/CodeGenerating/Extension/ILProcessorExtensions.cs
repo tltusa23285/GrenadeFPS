@@ -1,5 +1,4 @@
-﻿using FishNet.CodeGenerating.Helping.Extension;
-using MonoFN.Cecil;
+﻿using MonoFN.Cecil;
 using MonoFN.Cecil.Cil;
 
 namespace FishNet.CodeGenerating.Extension

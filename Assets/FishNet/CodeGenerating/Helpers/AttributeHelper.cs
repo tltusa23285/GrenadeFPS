@@ -2,7 +2,6 @@
 using FishNet.Object;
 using FishNet.Object.Helping;
 using FishNet.Object.Prediction;
-using FishNet.Object.Synchronizing;
 using MonoFN.Cecil;
 
 

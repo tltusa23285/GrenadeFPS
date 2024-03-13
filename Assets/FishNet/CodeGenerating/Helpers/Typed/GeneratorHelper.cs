@@ -1,8 +1,6 @@
 ﻿using FishNet.CodeGenerating.Extension;
 using FishNet.CodeGenerating.Helping.Extension;
 using FishNet.Object;
-using FishNet.Serializing.Helping;
-using FishNet.Utility.Performance;
 using MonoFN.Cecil;
 using System.Collections.Generic;
 

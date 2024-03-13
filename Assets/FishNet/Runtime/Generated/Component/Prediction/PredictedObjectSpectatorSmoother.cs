@@ -1,11 +1,4 @@
-﻿using FishNet.Transporting;
-using GameKit.Dependencies.Utilities;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
-
-
-namespace FishNet.Component.Prediction
+﻿namespace FishNet.Component.Prediction
 {
     internal class PredictedObjectSpectatorSmoother
     {

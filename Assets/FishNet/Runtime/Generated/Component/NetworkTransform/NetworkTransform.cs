@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Scripting;
-using UnityEngine.Serialization;
 
 namespace FishNet.Component.Transforming
 {

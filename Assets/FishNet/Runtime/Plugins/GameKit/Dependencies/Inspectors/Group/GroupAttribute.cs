@@ -3,12 +3,11 @@
 // https://github.com/PixeyeHQ/InspectorFoldoutGroup
 // MIT license https://github.com/PixeyeHQ/InspectorFoldoutGroup/blob/master/LICENSE
 
-using System;
 using UnityEngine;
 
 namespace GameKit.Dependencies.Inspectors
 {
-	public class GroupAttribute : PropertyAttribute
+    public class GroupAttribute : PropertyAttribute
 	{
 		public string name;
 		public bool foldEverything;

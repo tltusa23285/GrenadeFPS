@@ -1,6 +1,5 @@
 using FishNet.Object;
 using Game.Actors;
-using Game.Weapons.Grenades;
 using System.Collections.Generic;
 using UnityEngine;
 using FishNet;
