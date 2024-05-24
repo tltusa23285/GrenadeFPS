@@ -15,6 +15,7 @@ namespace Game.Weapons.Grenades
             {
                 if (go.TryGetComponent(out VisualEffect vfx))
                 {
+                    vfx.SetFloat("hydrthydt", 5);
                     vfx.SetFloat("Radius", Radius);
                 }
                 go.Play();

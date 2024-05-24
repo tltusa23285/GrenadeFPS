@@ -55,9 +55,11 @@ namespace Game
             int current = 0;
             for (int i = 0; i < Options.Length; i++)
             {
+                Debug.Log($"checking {Options[i]} == {property.stringValue}");
                 if (Options[i] == property.stringValue)
                 {
                     current = i;
+                    Debug.Log($"Current set to {Options[i]}");
                     break;
                 }
             }
@@ -66,6 +68,7 @@ namespace Game
             {
                 current = index;
                 property.stringValue = Options[current];
+                Debug.Log(Options[current]);
             }
 
             if (GUI.Button(position, Options[current], Button))
